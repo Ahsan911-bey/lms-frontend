@@ -34,6 +34,24 @@ export interface Announcement {
     timestamp: string;
 }
 
+export interface LearningResource {
+    id: number;
+    courseId: number;
+    title: string;
+    fileUrl: string;
+}
+
+export interface Assignment {
+    id: number;
+    title: string;
+    description: string;
+    dueDate: string;
+    teacherFileUrl: string | null;
+    teacherSubmitted: boolean;
+    studentSubmissionFileUrl: string | null;
+    status: "pending" | "submitted" | "late";
+}
+
 export interface Course {
     id: number;
     courseNo: string;
@@ -42,6 +60,8 @@ export interface Course {
     teacherId: number;
     studentIds: number[];
     announcements?: Announcement[];
+    learningResources?: LearningResource[];
+    assignments?: Assignment[];
 }
 
 export interface AttendanceStats {
@@ -167,6 +187,35 @@ export const getStudentAttendance = (studentId: number | string) =>
 
 export const getStudentAssignments = (studentId: number | string) =>
     apiGet<any>(`/student/${studentId}/assignments`);
+
+export const uploadFile = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch(`${BASE_URL}/files/upload`, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!res.ok) {
+        throw new Error(`File upload failed: ${res.status} ${res.statusText}`);
+    }
+
+    const filename = await res.text();
+    return filename;
+};
+
+export interface AssignmentSubmission {
+    studentId: number | string;
+    assignmentId: number | string;
+    fileUrl: string;
+}
+
+export const submitAssignment = (data: AssignmentSubmission) =>
+    apiPost<any>(`/student/assignment/submit`, data);
+
+export const getFileDownloadUrl = (filename: string) =>
+    `${BASE_URL}/files/download?path=${filename}`;
 
 // --- Teacher Portal ---
 

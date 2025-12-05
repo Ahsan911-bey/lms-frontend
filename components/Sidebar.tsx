@@ -20,8 +20,7 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
         { name: "Courses", href: `/students/${studentId}/courses`, icon: BookOpen },
         { name: "Reg Card", href: `/students/${studentId}/reg-card`, icon: IdCard },
         { name: "Result", href: `/students/${studentId}/result`, icon: GraduationCap },
-        { name: "Fees", href: `/students/${studentId}/fees`, icon: CreditCard },
-        { name: "Profile Settings", href: `/students/${studentId}/settings`, icon: UserCog },
+        { name: "Profile", href: `/students/${studentId}/profile`, icon: UserCog },
     ];
 
     return (
@@ -36,14 +35,14 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
                                 key={item.name}
                                 href={item.href}
                                 className={`flex items-center px-4 py-3 rounded-lg transition-colors group ${isActive
-                                        ? "bg-blue-50 text-blue-600"
-                                        : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                                    ? "bg-blue-50 text-blue-600"
+                                    : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
                                     }`}
                             >
                                 <item.icon
                                     className={`h-5 w-5 mr-3 transition-colors ${isActive
-                                            ? "text-blue-600"
-                                            : "text-gray-400 group-hover:text-blue-600"
+                                        ? "text-blue-600"
+                                        : "text-gray-400 group-hover:text-blue-600"
                                         }`}
                                 />
                                 <span className="font-medium">{item.name}</span>

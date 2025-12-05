@@ -12,6 +12,7 @@ export default async function DashboardPage({
     let attendance: AttendanceStats[] = [];
     let totalCourses = 0;
     let attendancePercentage = 0;
+    let pendingAssignments = 0;
 
     try {
         const [coursesData, attendanceData] = await Promise.all([
@@ -22,6 +23,13 @@ export default async function DashboardPage({
         courses = coursesData;
         attendance = attendanceData;
         totalCourses = courses.length;
+
+        // Calculate pending assignments
+        courses.forEach(course => {
+            if (course.assignments) {
+                pendingAssignments += course.assignments.filter(a => a.status === 'pending').length;
+            }
+        });
 
     } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
@@ -52,7 +60,7 @@ export default async function DashboardPage({
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-start justify-between">
                     <div>
                         <h3 className="text-gray-500 text-sm font-medium">Pending Assignments</h3>
-                        <p className="text-3xl font-bold text-orange-500 mt-2">0</p>
+                        <p className="text-3xl font-bold text-orange-500 mt-2">{pendingAssignments}</p>
                     </div>
                     <div className="p-3 bg-orange-50 rounded-lg text-orange-500">
                         <AlertCircle size={24} />
