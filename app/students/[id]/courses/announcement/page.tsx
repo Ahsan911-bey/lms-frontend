@@ -57,7 +57,7 @@ export default function CourseAnnouncementsPage({ params }: { params: Promise<{ 
 
             <CourseMenu studentId={id} courseId={String(selectedCourseId)} />
 
-            <div className="space-y-4">
+            <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-800 flex items-center">
                     <Bell className="mr-2 text-blue-600" size={20} />
                     Announcements
@@ -65,30 +65,55 @@ export default function CourseAnnouncementsPage({ params }: { params: Promise<{ 
 
                 {course.announcements && course.announcements.length > 0 ? (
                     <div className="space-y-4">
-                        {course.announcements.map((announcement) => (
+                        {course.announcements.map((announcement, index) => (
                             <motion.div
                                 key={announcement.id}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                                transition={{ delay: index * 0.1 }}
+                                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6"
                             >
-                                <p className="text-gray-800 mb-3">{announcement.message}</p>
-                                <div className="flex items-center text-xs text-gray-400">
-                                    <Calendar size={14} className="mr-1" />
-                                    {new Date(announcement.timestamp).toLocaleDateString(undefined, {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    })}
+                                {/* Decorative Gradient Blob */}
+                                <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                                <div className="relative z-10">
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="flex items-center space-x-3">
+                                            <div className="p-2 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                                <Bell size={18} />
+                                            </div>
+                                            <h4 className="font-semibold text-white">New Announcement</h4>
+                                        </div>
+                                        <div className="flex items-center text-xs text-slate-500 font-mono bg-black/20 px-2 py-1 rounded">
+                                            <Calendar size={12} className="mr-2" />
+                                            {new Date(announcement.timestamp).toLocaleDateString(undefined, {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <p className="text-slate-300 leading-relaxed text-sm md:text-base border-l-2 border-blue-500/50 pl-4">
+                                        {announcement.message}
+                                    </p>
+
+                                    <div className="mt-4 flex justify-end">
+                                        <span className="text-[10px] text-slate-600 uppercase tracking-widest">
+                                            Posted at {new Date(announcement.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-                        <p className="text-gray-500">No announcements yet.</p>
+                    <div className="text-center py-16 bg-slate-900/50 rounded-2xl border border-white/10 backdrop-blur-sm">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
+                            <Bell className="w-8 h-8 text-slate-600" />
+                        </div>
+                        <p className="text-slate-400 font-medium">No announcements yet.</p>
+                        <p className="text-sm text-slate-600 mt-2">Any updates from your instructor will appear here.</p>
                     </div>
                 )}
             </div>

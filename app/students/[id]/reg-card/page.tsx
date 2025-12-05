@@ -59,7 +59,7 @@ export default function RegCardPage({ params }: { params: Promise<{ id: string }
                             U
                         </div>
                         <div className="text-left">
-                            <h1 className="text-xl font-bold uppercase tracking-wider">University Portal</h1>
+                            <h1 className="text-xl font-bold uppercase tracking-wider">BA University</h1>
                             <p className="text-sm text-blue-200">Excellence in Education</p>
                         </div>
                     </div>
@@ -164,7 +164,7 @@ export default function RegCardPage({ params }: { params: Promise<{ id: string }
                     </div>
                     <div className="mt-4 text-center">
                         <p className="text-[10px] text-gray-400">
-                            This card is the property of University Portal. If found, please return to the Registrar Office.
+                            This card is the property of BA University. If found, please return to the Registrar Office.
                         </p>
                     </div>
                 </div>

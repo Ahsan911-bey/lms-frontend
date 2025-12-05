@@ -51,9 +51,15 @@ export default function CourseResourcesPage({ params }: { params: Promise<{ id: 
         );
     }
 
-    const getIcon = (url: string) => {
-        if (url.includes('youtube') || url.includes('vimeo')) return <Video className="w-5 h-5" />;
-        return <FileText className="w-5 h-5" />;
+    const getEmbedUrl = (url: string) => {
+        if (!url) return '';
+        if (url.includes('youtube.com/watch?v=')) {
+            return url.replace('watch?v=', 'embed/');
+        }
+        if (url.includes('youtu.be/')) {
+            return url.replace('youtu.be/', 'youtube.com/embed/');
+        }
+        return url;
     };
 
     return (
@@ -66,47 +72,88 @@ export default function CourseResourcesPage({ params }: { params: Promise<{ id: 
 
             <CourseMenu studentId={id} courseId={String(selectedCourseId)} />
 
-            <div className="space-y-4">
+            <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                    <Download className="mr-2 text-blue-600" size={20} />
+                    <Video className="mr-2 text-blue-600" size={20} />
                     Learning Resources
                 </h3>
 
                 {resources.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-4">
-                        {resources.map((resource, index) => (
-                            <motion.a
-                                key={resource.id}
-                                href={resource.fileUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="block group"
-                            >
-                                <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex items-center justify-between">
-                                    <div className="flex items-center space-x-4">
-                                        <div className="bg-blue-50 p-3 rounded-full text-blue-600 group-hover:bg-blue-100 transition-colors">
-                                            {getIcon(resource.fileUrl)}
-                                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {resources.map((resource, index) => {
+                            const embedUrl = getEmbedUrl(resource.fileUrl);
+                            const isVideo = resource.fileUrl.includes('youtube') || resource.fileUrl.includes('youtu.be');
+
+                            return (
+                                <motion.div
+                                    key={resource.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col"
+                                >
+                                    {/* Glass Highlight */}
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+
+                                    {/* Iframe Container */}
+                                    <div className="relative w-full aspect-video bg-black/50 border-b border-white/5">
+                                        {isVideo ? (
+                                            <iframe
+                                                src={embedUrl}
+                                                title={resource.title}
+                                                className="absolute inset-0 w-full h-full"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500">
+                                                <FileText size={48} className="mb-2 opacity-50" />
+                                                <p className="text-xs uppercase tracking-widest">Preview Not Available</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="p-6 flex flex-col flex-grow justify-between relative z-10">
                                         <div>
-                                            <h4 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                            <h4 className="text-lg font-bold text-white mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
                                                 {resource.title}
                                             </h4>
-                                            <p className="text-xs text-gray-500 truncate max-w-sm md:max-w-xl">
+                                            <p className="text-xs text-slate-400 mb-4 font-mono break-all line-clamp-1">
                                                 {resource.fileUrl}
                                             </p>
                                         </div>
+
+                                        <div className="mt-auto pt-4 border-t border-white/10 flex justify-between items-center">
+                                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center">
+                                                <span className={`w-2 h-2 rounded-full mr-2 ${isVideo ? 'bg-red-500' : 'bg-blue-500'}`}></span>
+                                                {isVideo ? 'Video Resource' : 'External Link'}
+                                            </span>
+
+                                            <a
+                                                href={resource.fileUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center space-x-2 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors bg-white/5 px-3 py-1.5 rounded-lg border border-white/5 hover:bg-white/10"
+                                            >
+                                                <span>Open</span>
+                                                <ExternalLink size={14} />
+                                            </a>
+                                        </div>
                                     </div>
-                                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-500" />
-                                </div>
-                            </motion.a>
-                        ))}
+
+                                    {/* Hover Glow */}
+                                    <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition-all pointer-events-none"></div>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-                        <p className="text-gray-500">No learning resources available yet.</p>
+                    <div className="text-center py-16 bg-slate-900/50 rounded-2xl border border-white/10 backdrop-blur-sm">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
+                            <Video className="w-8 h-8 text-slate-600" />
+                        </div>
+                        <p className="text-slate-400 font-medium">No learning resources available yet.</p>
+                        <p className="text-sm text-slate-600 mt-2">Check back later for course materials.</p>
                     </div>
                 )}
             </div>

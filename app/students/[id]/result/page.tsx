@@ -113,7 +113,7 @@ export default function ResultPage({ params }: { params: Promise<{ id: string }>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden print:shadow-none print:border-2 print:border-gray-800">
                 {/* Header for Print */}
                 <div className="hidden print:block bg-blue-900 text-white p-6 text-center mb-6">
-                    <h1 className="text-2xl font-bold uppercase tracking-wider">University Portal</h1>
+                    <h1 className="text-2xl font-bold uppercase tracking-wider">BA University</h1>
                     <h2 className="text-lg font-semibold mt-2 text-yellow-400">Semester Result Card</h2>
                     <p className="text-sm text-blue-200 mt-1">Fall 2025 Semester</p>
                 </div>

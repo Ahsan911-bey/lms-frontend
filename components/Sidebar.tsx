@@ -63,7 +63,7 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
 
             <div className="p-4 mt-auto border-t border-gray-100">
                 <div className="px-4 py-2">
-                    <p className="text-xs text-gray-400">© 2025 University LMS</p>
+                    <p className="text-xs text-gray-400">© 2025 BA University</p>
                 </div>
             </div>
         </aside>

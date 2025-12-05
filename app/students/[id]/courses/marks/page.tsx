@@ -51,10 +51,10 @@ export default function CourseMarksPage({ params }: { params: Promise<{ id: stri
     }
 
     const markItems = [
-        { label: "Quiz Marks", value: marks.quizMarks, color: "bg-blue-100 text-blue-700" },
-        { label: "Assignment Marks", value: marks.assignmentMarks, color: "bg-purple-100 text-purple-700" },
-        { label: "Mids Marks", value: marks.midsMarks, color: "bg-orange-100 text-orange-700" },
-        { label: "Final Marks", value: marks.finalMarks, color: "bg-green-100 text-green-700" },
+        { label: "Quiz Marks", value: marks.quizMarks },
+        { label: "Assignment Marks", value: marks.assignmentMarks },
+        { label: "Mids Marks", value: marks.midsMarks },
+        { label: "Final Marks", value: marks.finalMarks },
     ];
 
     return (
@@ -80,12 +80,29 @@ export default function CourseMarksPage({ params }: { params: Promise<{ id: stri
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className={`p-6 rounded-xl border border-gray-100 shadow-sm ${item.color.split(' ')[0]}`} // Use bg color
+                            whileHover={{ scale: 1.02 }}
+                            className="group relative overflow-hidden rounded-2xl p-6 border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-300"
                         >
-                            <h4 className="text-sm font-medium opacity-80 uppercase tracking-wider mb-2">{item.label}</h4>
-                            <p className={`text-3xl font-bold ${item.color.split(' ')[1]}`}>
-                                {item.value.toFixed(2)}
-                            </p>
+                            {/* Decorative Gradient Blob */}
+                            <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 ${item.label.includes("Quiz") ? "bg-blue-500" :
+                                item.label.includes("Assignment") ? "bg-purple-500" :
+                                    item.label.includes("Mids") ? "bg-orange-500" :
+                                        "bg-green-500"
+                                }`}></div>
+
+                            <div className="relative z-10">
+                                <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">{item.label}</h4>
+                                <div className="flex items-baseline space-x-1">
+                                    <p className={`text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${item.label.includes("Quiz") ? "from-blue-400 to-blue-200" :
+                                        item.label.includes("Assignment") ? "from-purple-400 to-purple-200" :
+                                            item.label.includes("Mids") ? "from-orange-400 to-yellow-200" :
+                                                "from-green-400 to-emerald-200"
+                                        }`}>
+                                        {item.value.toFixed(2)}
+                                    </p>
+                                    <span className="text-sm text-slate-500 font-medium">/ 100</span> {/* Assuming 100 for visual context, or just remove */}
+                                </div>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
