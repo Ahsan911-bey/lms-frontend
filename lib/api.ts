@@ -171,6 +171,27 @@ async function apiPost<T>(endpoint: string, body: any): Promise<T> {
     return text ? JSON.parse(text) : ({} as T);
 }
 
+/**
+ * Generic DELETE request handler
+ * @param endpoint - The API endpoint
+ * @returns Promise with the response data
+ */
+async function apiDelete<T>(endpoint: string): Promise<T> {
+    const res = await fetch(`${BASE_URL}${endpoint}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (!res.ok) {
+        throw new Error(`API DELETE request failed: ${res.status} ${res.statusText}`);
+    }
+
+    const text = await res.text();
+    return text ? JSON.parse(text) : ({} as T);
+}
+
 // --- Student Portal ---
 
 export const getStudentProfile = (studentId: number | string) =>
@@ -228,8 +249,14 @@ export const getTeacherCourseDetails = (courseCode: string, batchName: string) =
 export const markAttendance = (courseId: number | string, attendanceData: AttendanceRecord[]) =>
     apiPost<any>(`/teacher/course/${courseId}/attendance`, attendanceData);
 
+export const getStudentsByBatch = (courseCode: string, batchName: string) =>
+    apiGet<any[]>(`/teacher/courses/${courseCode}/${batchName}`);
+
 export const createAnnouncement = (data: AnnouncementData) =>
     apiPost<any>(`/teacher/announcement`, data);
+
+export const deleteAnnouncement = (announcementId: number | string) =>
+    apiDelete<any>(`/teacher/delannouncement/${announcementId}`);
 
 export const createAssignment = (data: AssignmentData) =>
     apiPost<any>(`/teacher/assignment`, data);
@@ -262,3 +289,26 @@ export const assignTeacherToCourse = (data: AssignTeacherData) =>
 
 export const assignStudentsToCourse = (data: AssignStudentsData) =>
     apiPost<any>(`/admin/course/assign-students`, data);
+
+export interface Teacher {
+    id: number;
+    name: string;
+    regNo: string;
+    emailAddress: string;
+    contactNumber: string;
+    guardianNumber: string;
+    fatherName: string;
+    program: string;
+    session: string;
+    semester: string;
+    campus: string;
+    className: string;
+    nationality: string;
+    dob: string;
+    profilePic: string;
+    qualification: string;
+    specialization: string;
+}
+
+export const getTeacherProfile = (teacherId: number | string) =>
+    apiGet<Teacher>(`/teacher/${teacherId}`);
