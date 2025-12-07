@@ -99,29 +99,70 @@ export interface MarksData {
     finalMarks: number;
 }
 
-// Admin types (Placeholders for extendability)
+// Admin types
 export interface StudentCreationData {
-    [key: string]: any;
+    id: number;
+    name: string;
+    regNo: string;
+    emailAddress: string;
+    contactNumber: string;
+    guardianNumber: string;
+    fatherName: string;
+    program: string;
+    session: string;
+    semester: string;
+    campus: string;
+    className: string;
+    nationality: string;
+    dob: string;
+    profilePic: string;
+    password?: string;
+    cgpa?: number;
+    wifiAccount?: string;
+    office365Email?: string;
+    office365Pass?: string;
+    batch?: string;
 }
 
 export interface TeacherCreationData {
-    [key: string]: any;
+    name: string;
+    regNo: string;
+    emailAddress: string;
+    contactNumber: string;
+    guardianNumber: string;
+    fatherName: string;
+    program: string;
+    session: string;
+    semester: string;
+    campus: string;
+    className: string;
+    nationality: string;
+    dob: string;
+    profilePic: string;
+    password?: string;
+    qualification: string;
+    specialization: string;
 }
 
 export interface CourseCreationData {
-    [key: string]: any;
+    courseNo: string;
+    courseName: string;
+    credits: number;
 }
 
 export interface BatchAssignData {
-    [key: string]: any;
+    studentIds: number[];
+    batch: string;
 }
 
 export interface AssignTeacherData {
-    [key: string]: any;
+    courseId: number;
+    teacherId: number;
 }
 
 export interface AssignStudentsData {
-    [key: string]: any;
+    courseId: number;
+    studentIds: number[];
 }
 
 // --- Helper Functions ---
