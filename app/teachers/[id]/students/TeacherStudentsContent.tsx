@@ -77,11 +77,11 @@ export default function TeacherStudentsContent({ id, courses }: TeacherStudentsC
                                         </h4>
                                     </div>
 
-                                    <div className="flex items-center gap-6 text-sm text-gray-500">
+                                    {/* <div className="flex items-center gap-6 text-sm text-gray-500">
                                         <span className="flex items-center gap-2">
                                             <Users size={16} className="text-blue-400" /> {course.totalStudents || 0} Students
                                         </span>
-                                    </div>
+                                    </div> */}
 
                                     <div className="flex items-center">
                                         <span className="px-4 py-2 bg-gray-50 text-gray-600 text-sm font-semibold rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-all whitespace-nowrap shadow-sm group-hover:shadow-blue-200">
