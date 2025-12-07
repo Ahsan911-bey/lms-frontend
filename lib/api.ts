@@ -235,8 +235,11 @@ export interface AssignmentSubmission {
 export const submitAssignment = (data: AssignmentSubmission) =>
     apiPost<any>(`/student/assignment/submit`, data);
 
-export const getFileDownloadUrl = (filename: string) =>
-    `${BASE_URL}/files/download?path=${filename}`;
+export const getFileDownloadUrl = (path: string) => {
+    // Extract filename from full path (handles both / and \)
+    const filename = path.split(/[/\\]/).pop() || path;
+    return `${BASE_URL}/files/download?path=${filename}`;
+};
 
 // --- Teacher Portal ---
 
@@ -261,7 +264,22 @@ export const deleteAnnouncement = (announcementId: number | string) =>
 export const createAssignment = (data: AssignmentData) =>
     apiPost<any>(`/teacher/assignment`, data);
 
+export const getAssignmentSubmissions = (assignmentId: number | string) =>
+    apiGet<any[]>(`/teacher/assignment/${assignmentId}/submissions`);
+
 export const recordMarks = (data: MarksData) =>
+    apiPost<any>(`/teacher/marks`, data);
+
+export interface MarksSubmissionData {
+    studentId: number | string;
+    courseId: number | string;
+    quizMarks?: number;
+    assignmentMarks?: number;
+    midsMarks?: number;
+    finalMarks?: number;
+}
+
+export const submitMark = (data: MarksSubmissionData) =>
     apiPost<any>(`/teacher/marks`, data);
 
 // --- Admin Portal ---

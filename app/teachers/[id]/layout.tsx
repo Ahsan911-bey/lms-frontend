@@ -1,6 +1,7 @@
 import { getTeacherProfile, Teacher } from "@/lib/api";
 import TeacherProfileHeader from "@/components/TeacherProfileHeader";
 import TeacherSidebar from "@/components/TeacherSidebar";
+import PageWrapper from "@/components/PageWrapper";
 
 // Mock data for fallback/development
 const MOCK_TEACHER: Teacher = {
@@ -48,7 +49,9 @@ export default async function TeacherLayout({
             <div className="flex flex-1 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 gap-8">
                 <TeacherSidebar teacherId={teacher.id} />
                 <main className="flex-1 min-w-0">
-                    {children}
+                    <PageWrapper>
+                        {children}
+                    </PageWrapper>
                 </main>
             </div>
         </div>

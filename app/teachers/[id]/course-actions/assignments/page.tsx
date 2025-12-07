@@ -1,7 +1,7 @@
 import { getTeacherCourses, Course } from "@/lib/api";
-import TeacherCoursesContent from "./TeacherCoursesContent";
+import AssignmentsContent from "./AssignmentsContent";
 
-export default async function TeacherCoursesPage({
+export default async function AssignmentCoursesPage({
     params,
 }: {
     params: Promise<{ id: string }>;
@@ -15,5 +15,5 @@ export default async function TeacherCoursesPage({
         console.warn("Failed to fetch teacher courses", error);
     }
 
-    return <TeacherCoursesContent id={id} courses={courses} />;
+    return <AssignmentsContent id={id} courses={courses} />;
 }
