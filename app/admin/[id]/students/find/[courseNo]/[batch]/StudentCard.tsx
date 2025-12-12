@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteStudent, CourseStudent } from "@/lib/api";
 import { Trash2, Loader2, User } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface StudentCardProps {
     student: CourseStudent;
+    index?: number;
 }
 
-export default function StudentCard({ student }: StudentCardProps) {
+export default function StudentCard({ student, index = 0 }: StudentCardProps) {
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -28,32 +30,38 @@ export default function StudentCard({ student }: StudentCardProps) {
     };
 
     return (
-        <tr className="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors group">
-            <td className="py-4 px-6">
+        <motion.tr
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ delay: index * 0.05 }}
+            className="hover:bg-purple-50/30 transition-colors group"
+        >
+            <td className="py-5 px-8">
                 <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5" />
+                    <div className="h-12 w-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                        <User className="h-6 w-6" />
                     </div>
                     <div>
-                        <p className="font-semibold text-gray-900">{student.name}</p>
-                        <p className="text-xs text-gray-500">{student.email}</p>
+                        <p className="font-bold text-gray-900 text-base">{student.name}</p>
+                        <p className="text-xs text-gray-500 font-medium mt-0.5">{student.email}</p>
                     </div>
                 </div>
             </td>
-            <td className="py-4 px-6 text-sm text-gray-600 font-medium">{student.regNo}</td>
-            <td className="py-4 px-6 text-sm text-gray-500">{student.rollNo}</td>
-            <td className="py-4 px-6 text-right">
+            <td className="py-5 px-8 text-sm text-gray-600 font-semibold bg-gray-50/30 rounded-lg mx-2">{student.regNo}</td>
+            <td className="py-5 px-8 text-sm text-gray-500 font-mono">{student.rollNo}</td>
+            <td className="py-5 px-8 text-right">
                 <div className="flex justify-end">
                     <button
                         onClick={handleDelete}
                         disabled={isDeleting}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                        className="p-2.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-sm hover:shadow-md"
                         title="Delete Student"
                     >
-                        {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                        {isDeleting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Trash2 className="h-5 w-5" />}
                     </button>
                 </div>
             </td>
-        </tr>
+        </motion.tr>
     );
 }

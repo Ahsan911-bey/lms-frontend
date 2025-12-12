@@ -185,6 +185,11 @@ export interface AssignStudentsData {
     studentIds: number[];
 }
 
+export interface AssignBatchToCourseData {
+    courseId: number;
+    batchId: number;
+}
+
 // --- Helper Functions ---
 
 /**
@@ -382,6 +387,9 @@ export const createCourse = (data: CourseCreationData) =>
 
 export const assignBatch = (data: BatchAssignData) =>
     apiPost<any>(`/admin/batch/assign`, data);
+
+export const assignBatchToCourse = (data: AssignBatchToCourseData) =>
+    apiPost<any>(`/admin/course/assign-batch`, data);
 
 export const assignTeacherToCourse = (data: AssignTeacherData) =>
     apiPost<any>(`/admin/course/assign-teacher`, data);

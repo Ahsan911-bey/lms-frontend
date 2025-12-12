@@ -6,8 +6,9 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useState, use } from "react";
 import { createCourse } from "@/lib/api";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, BookPlus } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const courseSchema = z.object({
     courseNo: z.string().min(2, "Course Code is required"),
@@ -53,63 +54,86 @@ export default function CreateCoursePage({ params }: { params: Promise<{ id: str
     };
 
     return (
-        <div className="max-w-2xl mx-auto">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl mx-auto"
+        >
             <Link
                 href={`/admin/${id}/courses`}
-                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-6"
+                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-6 transition-colors"
             >
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Back to Courses
             </Link>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-8 border-b border-gray-100 bg-gray-50/50">
-                    <h1 className="text-2xl font-bold text-gray-900">Create New Course</h1>
-                    <p className="text-gray-500 mt-1">Add a new course to the university catalog.</p>
+            <div className="bg-white rounded-3xl shadow-xl shadow-indigo-900/5 border border-gray-100 overflow-hidden">
+                <div className="p-8 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900">Create New Course</h1>
+                        <p className="text-gray-500 mt-1">Add a new course to the university catalog.</p>
+                    </div>
+                    <div className="h-12 w-12 bg-white rounded-xl flex items-center justify-center text-indigo-600 shadow-sm border border-gray-100">
+                        <BookPlus className="h-6 w-6" />
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-6">
                     {error && (
-                        <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="p-4 bg-red-50 text-red-600 rounded-xl text-sm border border-red-100"
+                        >
                             {error}
-                        </div>
+                        </motion.div>
                     )}
                     {success && (
-                        <div className="p-4 bg-green-50 text-green-600 rounded-lg text-sm border border-green-100">
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="p-4 bg-green-50 text-green-600 rounded-xl text-sm border border-green-100"
+                        >
                             Course created successfully! Redirecting...
-                        </div>
+                        </motion.div>
                     )}
 
                     <Input label="Course Code" placeholder="CS-101" error={errors.courseNo} {...register("courseNo")} />
                     <Input label="Course Name" placeholder="Introduction to Computing" error={errors.courseName} {...register("courseName")} />
                     <Input label="Credit Hours" type="number" placeholder="3" error={errors.credits} {...register("credits")} />
 
-                    <div className="pt-4 flex justify-end gap-3">
+                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
+                        <Link
+                            href={`/admin/${id}/courses`}
+                            className="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+                        >
+                            Cancel
+                        </Link>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 disabled:opacity-50 flex items-center justify-center"
+                            className="px-8 py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 hover:shadow-indigo-300 disabled:opacity-50 flex items-center"
                         >
-                            {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                            {isSubmitting && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
                             Create Course
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
+        </motion.div>
     );
 }
 
 function Input({ label, error, className = "", ...props }: any) {
     return (
         <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
             <input
-                className={`w-full px-4 py-2.5 rounded-xl border bg-gray-50/50 focus:bg-white transition-all duration-200 ${error ? "border-red-300 focus:ring-red-200 focus:border-red-500" : "border-gray-200 focus:ring-blue-200 focus:border-blue-500 focus:ring-4"
+                className={`w-full px-4 py-3 rounded-xl border bg-gray-50/50 focus:bg-white transition-all duration-200 outline-none ${error ? "border-red-200 bg-red-50/30 focus:border-red-500 focus:ring-4 focus:ring-red-500/10" : "border-gray-200 hover:border-gray-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
                     } ${className}`}
                 {...props}
             />
-            {error && <p className="mt-1 text-sm text-red-500">{error.message}</p>}
+            {error && <p className="mt-1.5 text-xs text-red-500 font-medium flex items-center"><span className="w-1 h-1 bg-red-500 rounded-full mr-1.5"></span>{error.message}</p>}
         </div>
     );
 }

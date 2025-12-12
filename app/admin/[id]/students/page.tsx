@@ -1,59 +1,100 @@
+"use client";
+
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Users, Search, GraduationCap, ArrowRight } from "lucide-react";
+import { use } from "react";
+import { motion } from "framer-motion";
 
-export default async function StudentsPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export default function StudentsPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
 
-    // Note: User didn't ask for a "Get All Students" endpoint implementation, only "Get Students of a Course".
-    // So this page mainly serves as a landing to add new students, or we could add a placeholder list.
+    const actions = [
+        {
+            title: "Create New Student",
+            description: "Register a new student into the university system with their personal and academic details.",
+            href: `/admin/${id}/students/new`,
+            icon: Plus,
+            color: "bg-purple-50 text-purple-600",
+            hover: "hover:border-purple-200 group-hover:bg-purple-100"
+        },
+        {
+            title: "View by Course",
+            description: "Browse students by selecting a specific course and batch.",
+            href: `/admin/${id}/students/view`,
+            icon: Users,
+            color: "bg-blue-50 text-blue-600",
+            hover: "hover:border-blue-200 group-hover:bg-blue-100"
+        },
+        {
+            title: "View All Students",
+            description: "List and manage all students registered in the university.",
+            href: `/admin/${id}/students/all`,
+            icon: Search,
+            color: "bg-green-50 text-green-600",
+            hover: "hover:border-green-200 group-hover:bg-green-100"
+        }
+    ];
 
     return (
-        <div className="space-y-8">
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+        >
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Student Management</h1>
-                <p className="text-gray-500">Add new students or view and manage existing records.</p>
+                <h1 className="text-3xl font-bold text-gray-900">Student Management</h1>
+                <p className="text-gray-500 mt-1">Add new students or view and manage existing records.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Link
-                    href={`/admin/${id}/students/new`}
-                    className="block p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-purple-200 transition-all group"
-                >
-                    <div className="h-12 w-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <Plus className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Create New Student</h3>
-                    <p className="text-gray-500">Register a new student into the university system with their personal and academic details.</p>
-                </Link>
+                {actions.map((action, idx) => (
+                    <Link
+                        key={action.title}
+                        href={action.href}
+                    >
+                        <motion.div
+                            whileHover={{ y: -5 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className={`block p-8 bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/5 group h-full ${action.hover} relative overflow-hidden`}
+                        >
+                            <div className={`h-14 w-14 ${action.color} rounded-2xl flex items-center justify-center mb-6 transition-transform shadow-inner`}>
+                                <action.icon className="h-7 w-7" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">{action.title}</h3>
+                            <p className="text-gray-500 leading-relaxed mb-8">{action.description}</p>
 
-                <Link
-                    href={`/admin/${id}/students/view`}
-                    className="block p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
-                >
-                    <div className="h-12 w-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">View by Course</h3>
-                    <p className="text-gray-500">Browse students by selecting a course and batch.</p>
-                </Link>
-
-                <Link
-                    href={`/admin/${id}/students/all`}
-                    className="block p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-green-200 transition-all group"
-                >
-                    <div className="h-12 w-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">View All Students</h3>
-                    <p className="text-gray-500">List all students in the university with full details.</p>
-                </Link>
+                            <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-4 group-hover:translate-x-0">
+                                <div className="h-10 w-10 bg-gray-900 rounded-full flex items-center justify-center text-white shadow-lg">
+                                    <ArrowRight className="h-5 w-5" />
+                                </div>
+                            </div>
+                        </motion.div>
+                    </Link>
+                ))}
             </div>
-            {/* Added explicit 3-column grid for better layout if needed, but the parent is grid-cols-1 md:grid-cols-2. I should probably update the parent grid to be 3 columns or just let it wrap. 
-               The previous code was: <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               If I add a 3rd item, it will wrap or I can change grid-cols to 3.
-               I will change the grid to grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-            */}
 
-        </div>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-gradient-to-br from-indigo-900 to-purple-800 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl"
+            >
+                {/* <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <h3 className="text-2xl font-bold mb-2">Student Analytics</h3>
+                        <p className="text-indigo-200 max-w-lg">Get insights into student performance, attendance trends, and enrollment statistics across all departments.</p>
+                    </div>
+                    <button className="px-6 py-3 bg-white text-indigo-900 rounded-xl font-bold hover:bg-indigo-50 transition-colors shadow-lg">
+                        View Reports
+                    </button>
+                </div> */}
+
+                {/* Abstract Background Shapes */}
+                <div className="absolute top-0 right-0 -mt-10 -mr-10 h-64 w-64 bg-white opacity-5 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -mb-10 -ml-10 h-40 w-40 bg-purple-500 opacity-20 rounded-full blur-2xl"></div>
+            </motion.div>
+        </motion.div>
     );
 }

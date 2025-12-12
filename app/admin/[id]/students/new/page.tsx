@@ -5,9 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useState, use } from "react";
-import { createStudent, StudentCreationData } from "@/lib/api";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { createStudent } from "@/lib/api";
+import { Loader2, ArrowLeft, UploadCloud } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const studentSchema = z.object({
     id: z.coerce.number().min(1, "Student ID is required"),
@@ -70,31 +71,45 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
     };
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl mx-auto"
+        >
             <Link
                 href={`/admin/${id}/students`}
-                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-6"
+                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-900 mb-6 transition-colors"
             >
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Back to Students
             </Link>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-8 border-b border-gray-100 bg-gray-50/50">
-                    <h1 className="text-2xl font-bold text-gray-900">Add New Student</h1>
-                    <p className="text-gray-500 mt-1">Register a new student to the portal.</p>
+            <div className="bg-white rounded-3xl shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden">
+                <div className="p-8 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900">Register New Student</h1>
+                        <p className="text-gray-500 mt-1">Enter the details to enroll a new student.</p>
+                    </div>
+                    <div className="h-12 w-12 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm border border-gray-100">
+                        <UploadCloud className="h-6 w-6" />
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-8">
                     {error && (
-                        <div className="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100">
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            className="p-4 bg-red-50 text-red-600 rounded-xl text-sm border border-red-100 flex items-center"
+                        >
+                            <span className="w-1.5 h-1.5 bg-red-600 rounded-full mr-3"></span>
                             {error}
-                        </div>
+                        </motion.div>
                     )}
 
                     {/* Basic Info */}
                     <div className="space-y-6">
-                        <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Basic Information</h2>
+                        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Input label="Student ID (Numeric)" type="number" error={errors.id} {...register("id")} />
                             <Input label="Full Name" error={errors.name} {...register("name")} />
@@ -107,7 +122,7 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
 
                     {/* Contact Info */}
                     <div className="space-y-6">
-                        <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Contact Details</h2>
+                        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Contact Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Input label="Contact Number" error={errors.contactNumber} {...register("contactNumber")} />
                             <Input label="Guardian Number" error={errors.guardianNumber} {...register("guardianNumber")} />
@@ -119,7 +134,7 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
 
                     {/* Academic Info */}
                     <div className="space-y-6">
-                        <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Academic Information</h2>
+                        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Academic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Input label="Registration No" placeholder="CS-001" error={errors.regNo} {...register("regNo")} />
                             <Input label="Program" placeholder="Computer Science" error={errors.program} {...register("program")} />
@@ -134,7 +149,7 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
 
                     {/* Credentials & System Access */}
                     <div className="space-y-6">
-                        <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Credentials & Access</h2>
+                        <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Credentials & Access</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <Input label="Portal Password" type="password" error={errors.password} {...register("password")} />
                             <Input label="Wi-Fi Account" error={errors.wifiAccount} {...register("wifiAccount")} />
@@ -143,38 +158,40 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
                         </div>
                     </div>
 
-                    <div className="pt-4 flex justify-end gap-3">
+                    <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
                         <Link
                             href={`/admin/${id}/students`}
-                            className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+                            className="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors"
                         >
                             Cancel
                         </Link>
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="px-6 py-2.5 rounded-xl bg-purple-600 text-white font-medium hover:bg-purple-700 transition-colors shadow-lg shadow-purple-200 disabled:opacity-50 flex items-center"
+                            className="px-8 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 hover:shadow-blue-300 disabled:opacity-50 flex items-center"
                         >
-                            {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                            {isSubmitting && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
                             Create Student
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
+        </motion.div>
     );
 }
 
 function Input({ label, error, className = "", ...props }: any) {
     return (
         <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
             <input
-                className={`w-full px-4 py-2.5 rounded-xl border bg-gray-50/50 focus:bg-white transition-all duration-200 ${error ? "border-red-300 focus:ring-red-200 focus:border-red-500" : "border-gray-200 focus:ring-purple-200 focus:border-purple-500 focus:ring-4"
+                className={`w-full px-4 py-3 rounded-xl border bg-gray-50/50 focus:bg-white transition-all duration-200 outline-none ${error
+                    ? "border-red-200 bg-red-50/30 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
+                    : "border-gray-200 hover:border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     } ${className}`}
                 {...props}
             />
-            {error && <p className="mt-1 text-sm text-red-500">{error.message}</p>}
+            {error && <p className="mt-1.5 text-xs text-red-500 font-medium flex items-center"><span className="w-1 h-1 bg-red-500 rounded-full mr-1.5"></span>{error.message}</p>}
         </div>
     );
 }
