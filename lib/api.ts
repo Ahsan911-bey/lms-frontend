@@ -414,3 +414,23 @@ export const getTeacherProfile = (teacherId: number | string) =>
 
 export const deleteTeacher = (teacherId: number | string) =>
     apiDelete<any>(`/admin/teacher/${teacherId}`);
+
+export const getAdminCourses = () =>
+    apiGet<Course[]>(`/admin/courses`);
+
+export interface Batch {
+    id: number;
+    name: string;
+}
+
+export const getAllBatches = () =>
+    apiGet<Batch[]>(`/admin/batches`);
+
+export const deleteStudent = (studentId: number | string) =>
+    apiDelete<any>(`/admin/student/${studentId}`);
+
+export const getAllStudents = () =>
+    apiGet<Student[]>(`/admin/students`);
+
+export const createBatch = (data: { name: string }) =>
+    apiPost<Batch>(`/admin/batch`, data);

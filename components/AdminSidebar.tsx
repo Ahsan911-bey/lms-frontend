@@ -7,7 +7,9 @@ import {
     GraduationCap,
     BookOpen,
     LogOut,
-    PlusCircle
+    PlusCircle,
+    Layers,
+    FolderOpen
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -19,6 +21,8 @@ export default function AdminSidebar({ adminId }: { adminId: number | string }) 
         { name: "Teachers", href: `/admin/${adminId}/teachers`, icon: School },
         { name: "Students", href: `/admin/${adminId}/students`, icon: GraduationCap },
         { name: "Courses", href: `/admin/${adminId}/courses`, icon: BookOpen },
+        { name: "Assignments", href: `/admin/${adminId}/assign`, icon: Layers },
+        { name: "Batches", href: `/admin/${adminId}/batches`, icon: FolderOpen },
     ];
 
     return (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookPlus, Users, UserPlus, Layers } from "lucide-react";
+import { BookPlus, BookOpen } from "lucide-react";
 
 export default async function CoursesPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -14,28 +14,12 @@ export default async function CoursesPage({ params }: { params: Promise<{ id: st
             hover: "hover:border-blue-200"
         },
         {
-            title: "Assign Batch",
-            description: "Enroll a batch of students into the system.",
-            href: `/admin/${id}/courses/assign-batch`,
-            icon: Layers,
-            color: "bg-orange-50 text-orange-600",
-            hover: "hover:border-orange-200"
-        },
-        {
-            title: "Assign Teacher to Course",
-            description: "Allocate faculty members to specific courses.",
-            href: `/admin/${id}/courses/assign-teacher`,
-            icon: UserPlus,
-            color: "bg-purple-50 text-purple-600",
-            hover: "hover:border-purple-200"
-        },
-        {
-            title: "Assign Students to Course",
-            description: "Enroll students into specific course sections.",
-            href: `/admin/${id}/courses/assign-students`,
-            icon: Users,
-            color: "bg-green-50 text-green-600",
-            hover: "hover:border-green-200"
+            title: "View All Courses",
+            description: "Browse the full course catalog and statistics.",
+            href: `/admin/${id}/courses/all`,
+            icon: BookOpen,
+            color: "bg-indigo-50 text-indigo-600",
+            hover: "hover:border-indigo-200"
         }
     ];
 
