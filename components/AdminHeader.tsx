@@ -1,4 +1,6 @@
-export default function AdminHeader() {
+import { Admin } from "@/lib/api";
+
+export default function AdminHeader({ admin }: { admin: Admin }) {
     return (
         <div className="relative overflow-hidden bg-slate-900 border-b border-gray-800 shadow-2xl">
             {/* Background Gradients & Glows */}
@@ -30,8 +32,8 @@ export default function AdminHeader() {
                         <div className="absolute inset-0 rounded-full bg-violet-500 blur-md opacity-50"></div>
                         <div className="relative h-full w-full rounded-full bg-slate-800 flex items-center justify-center border-4 border-white/20 shadow-2xl overflow-hidden">
                             <img
-                                src="https://ui-avatars.com/api/?name=Admin+User&background=6366f1&color=fff"
-                                alt="Admin"
+                                src={admin.profilePic || `https://ui-avatars.com/api/?name=${admin.name}&background=6366f1&color=fff`}
+                                alt={admin.name}
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -42,14 +44,14 @@ export default function AdminHeader() {
                     <div className="flex-1 text-center md:text-left w-full">
                         <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                             <div>
-                                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-sm">System Administrator</h1>
+                                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-sm">{admin.name}</h1>
                                 <p className="text-violet-200 font-medium text-lg mt-1 flex items-center justify-center md:justify-start gap-2">
-                                    <span className="opacity-70">Role:</span> Super Admin
+                                    <span className="opacity-70">Role:</span> {admin.designation}
                                 </p>
                             </div>
                             <div className="mt-4 md:mt-0">
                                 <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold bg-violet-500/20 text-violet-100 border border-violet-400/30 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
-                                    Active Session
+                                    Active Session: {admin.session}
                                 </span>
                             </div>
                         </div>
@@ -61,11 +63,11 @@ export default function AdminHeader() {
                             </div>
                             <div className="group">
                                 <span className="block text-violet-300/70 text-xs uppercase tracking-wider font-semibold mb-1 group-hover:text-violet-200 transition-colors">Campus</span>
-                                <span className="font-bold text-white text-lg">Main HQ</span>
+                                <span className="font-bold text-white text-lg">{admin.campus}</span>
                             </div>
                             <div className="group">
                                 <span className="block text-violet-300/70 text-xs uppercase tracking-wider font-semibold mb-1 group-hover:text-violet-200 transition-colors">Department</span>
-                                <span className="font-bold text-white text-lg">IT Services</span>
+                                <span className="font-bold text-white text-lg">{admin.department}</span>
                             </div>
                             <div className="group">
                                 <span className="block text-violet-300/70 text-xs uppercase tracking-wider font-semibold mb-1 group-hover:text-violet-200 transition-colors">Status</span>

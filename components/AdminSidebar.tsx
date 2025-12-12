@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,14 +11,14 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ adminId }: { adminId: number | string }) {
     const pathname = usePathname();
 
     const menuItems = [
-        { name: "Dashboard", href: `/admin/dashboard`, icon: LayoutDashboard },
-        { name: "Teachers", href: `/admin/teachers`, icon: School },
-        { name: "Students", href: `/admin/students`, icon: GraduationCap },
-        { name: "Courses", href: `/admin/courses`, icon: BookOpen },
+        { name: "Dashboard", href: `/admin/${adminId}/dashboard`, icon: LayoutDashboard },
+        { name: "Teachers", href: `/admin/${adminId}/teachers`, icon: School },
+        { name: "Students", href: `/admin/${adminId}/students`, icon: GraduationCap },
+        { name: "Courses", href: `/admin/${adminId}/courses`, icon: BookOpen },
     ];
 
     return (

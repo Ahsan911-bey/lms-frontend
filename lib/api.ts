@@ -99,6 +99,26 @@ export interface MarksData {
     finalMarks: number;
 }
 
+export interface Admin {
+    id: number;
+    name: string;
+    regNo: string;
+    emailAddress: string;
+    contactNumber: string;
+    guardianNumber: string;
+    fatherName: string;
+    program: string;
+    session: string;
+    semester: string;
+    campus: string;
+    className: string;
+    nationality: string;
+    dob: string;
+    profilePic: string;
+    designation: string;
+    department: string;
+}
+
 // Admin types
 export interface StudentCreationData {
     id: number;
@@ -325,11 +345,31 @@ export const submitMark = (data: MarksSubmissionData) =>
 
 // --- Admin Portal ---
 
+// 1. Admin Profile
+export const getAdminProfile = (adminId: number | string) =>
+    apiGet<Admin>(`/admin/${adminId}`);
+
+// 2. Get All Teachers (reusing Teacher interface if compatible, or creating new if fields differ slightly)
+// For now assuming Teacher interface is sufficient, but note user response included "id" which Teacher interface has.
 export const getAdminTeachers = () =>
-    apiGet<any>(`/admin/teachers`);
+    apiGet<Teacher[]>(`/admin/teachers`);
+
+// 3. Get Students of a Course
+// Need a specific type for this response based on User Request
+export interface CourseStudent {
+    studentId: number;
+    name: string;
+    rollNo: string;
+    regNo: string;
+    email: string;
+}
+
+export const getAdminCourseStudents = (courseCode: string, batchName: string) =>
+    apiGet<CourseStudent[]>(`/admin/courses/${courseCode}/${batchName}`);
 
 export const getAdminCourseDetails = (courseCode: string, batchName: string) =>
     apiGet<any>(`/admin/courses/${courseCode}/${batchName}`);
+
 
 export const createStudent = (data: StudentCreationData) =>
     apiPost<any>(`/admin/student`, data);
@@ -371,3 +411,6 @@ export interface Teacher {
 
 export const getTeacherProfile = (teacherId: number | string) =>
     apiGet<Teacher>(`/teacher/${teacherId}`);
+
+export const deleteTeacher = (teacherId: number | string) =>
+    apiDelete<any>(`/admin/teacher/${teacherId}`);
