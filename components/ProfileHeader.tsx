@@ -12,14 +12,15 @@ export default function ProfileHeader({ student }: { student: Student }) {
             </div>
 
             {/* University Header Text */}
-            <div className="absolute top-5 left-6 z-10 flex items-center gap-3">
+            <div className="absolute top-5 left-5 z-10 flex items-center gap-2">
+                <img src="https://swl-cms.comsats.edu.pk/images/logo.png" alt="CUI Logo" className="h-22 w-auto object-contain" />
                 <div className="h-8 w-1 bg-blue-400 rounded-full"></div>
                 <div>
                     <h2 className="text-sm font-bold text-white tracking-widest uppercase font-sans leading-none">
-                        BA University
+                        CUI
                     </h2>
                     <p className="text-[10px] text-blue-200 uppercase tracking-[0.2em] font-medium leading-none mt-1">
-                        Sahiwal Campus
+                        Student Portal
                     </p>
                 </div>
             </div>

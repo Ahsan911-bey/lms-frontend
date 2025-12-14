@@ -54,12 +54,17 @@ export default function RegCardPage({ params }: { params: Promise<{ id: string }
                 {/* Header */}
                 <div className="bg-blue-900 text-white p-6 text-center print:bg-blue-900 print:text-white">
                     <div className="flex items-center justify-center space-x-4 mb-2">
-                        {/* Placeholder for Logo */}
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-900 font-bold text-xl">
-                            U
+                        {/* Logo */}
+                        <div className="w-16 h-16 relative bg-white rounded-full overflow-hidden shrink-0">
+                            <Image
+                                src="https://swl-cms.comsats.edu.pk:8082/Content/img/logo_with_text.png"
+                                alt="University Logo"
+                                fill
+                                className="object-contain p-1"
+                            />
                         </div>
                         <div className="text-left">
-                            <h1 className="text-xl font-bold uppercase tracking-wider">BA University</h1>
+                            <h1 className="text-xl font-bold uppercase tracking-wider">CUI</h1>
                             <p className="text-sm text-blue-200">Excellence in Education</p>
                         </div>
                     </div>
@@ -164,7 +169,7 @@ export default function RegCardPage({ params }: { params: Promise<{ id: string }
                     </div>
                     <div className="mt-4 text-center">
                         <p className="text-[10px] text-gray-400">
-                            This card is the property of BA University. If found, please return to the Registrar Office.
+                            This card is the property of CUI. If found, please return to the Registrar Office.
                         </p>
                     </div>
                 </div>
