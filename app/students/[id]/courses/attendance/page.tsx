@@ -109,7 +109,7 @@ export default function CourseAttendancePage({ params }: { params: Promise<{ id:
                                     className={`h-full rounded-full relative ${percentage >= 75 ? 'bg-gradient-to-r from-green-500 to-green-400' : 'bg-gradient-to-r from-orange-500 to-orange-400'}`}
                                     initial={{ width: 0 }}
                                     animate={{ width: `${percentage}%` }}
-                                    transition={{ duration: 1.5, ease: "circOut" }}
+                                    transition={{ duration: 1.5, ease: "circOut" as const }}
                                 >
                                 </motion.div>
                             </div>
