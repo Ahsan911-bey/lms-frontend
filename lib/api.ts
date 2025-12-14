@@ -231,7 +231,18 @@ async function apiPost<T>(endpoint: string, body: any): Promise<T> {
     });
 
     if (!res.ok) {
-        throw new Error(`API POST request failed: ${res.status} ${res.statusText}`);
+        let errorMessage = `API POST request failed: ${res.status} ${res.statusText}`;
+        try {
+            const errorBody = await res.json();
+            if (errorBody) {
+                return errorBody;
+            }
+        } catch (e) {
+            // response was not JSON or empty
+        }
+        // If we can't parse the error, or it's not JSON, we might still have to throw or return a generic error object
+        console.warn(`API Request failed with status ${res.status}`);
+        return { message: res.statusText } as any;
     }
 
     // Handle empty responses or non-JSON responses if necessary
@@ -308,6 +319,34 @@ export const getFileDownloadUrl = (path: string) => {
     const filename = path.split(/[/\\]/).pop() || path;
     return `${BASE_URL}/files/download?path=${filename}`;
 };
+
+export interface StudentLoginCredentials {
+    id: number;
+    regNo: string;
+    password: string;
+}
+
+export const validateStudent = (data: StudentLoginCredentials) =>
+    apiPost<string>(`/student/login`, data);
+
+export interface TeacherLoginCredentials {
+    id: number;
+    password: string;
+}
+
+export const validateTeacher = (data: TeacherLoginCredentials) =>
+    apiPost<string>(`/teacher/login`, data);
+
+export interface AdminLoginCredentials {
+    id: number;
+    password: string;
+}
+
+export const validateAdmin = (data: AdminLoginCredentials) =>
+    apiPost<string>(`/admin/login`, data);
+
+
+
 
 // --- Teacher Portal ---
 

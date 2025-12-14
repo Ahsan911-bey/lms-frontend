@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "example.com",
       },
+      {
+        protocol: "https",
+        hostname: "swl-cms.comsats.edu.pk",
+        port: "8082",
+      },
     ],
   },
 };
