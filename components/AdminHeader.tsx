@@ -13,7 +13,9 @@ export default function AdminHeader({ admin }: { admin: Admin }) {
 
             {/* University Header Text */}
             <div className="absolute top-5 left-5 z-10 flex items-center gap-2">
-                <img src="https://swl-cms.comsats.edu.pk/images/logo.png" alt="CUI Logo" className="h-22 w-auto object-contain" />
+                {/* <div className="hidden 2xl:block">
+                    <img src="https://swl-cms.comsats.edu.pk/images/logo.png" alt="CUI Logo" className="h-22 w-auto object-contain" />
+                </div> */}
                 <div className="h-8 w-1 bg-violet-400 rounded-full"></div>
                 <div>
                     <h2 className="text-sm font-bold text-white tracking-widest uppercase font-sans leading-none">
