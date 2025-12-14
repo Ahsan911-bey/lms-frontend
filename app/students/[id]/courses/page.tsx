@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { getStudentCourses, Course } from "@/lib/api";
 import { useCourseStore } from "@/lib/store";
 import CourseCard from "@/components/CourseCard";
-import { use } from "react";
+import { BookOpen } from "lucide-react";
 
 export default function CoursesPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -35,37 +35,75 @@ export default function CoursesPage({ params }: { params: Promise<{ id: string }
         router.push(`/students/${id}/courses/announcement`);
     };
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: "easeOut"
+            }
+        }
+    };
+
     if (loading) {
-        return <div className="p-8 text-center text-gray-500">Loading courses...</div>;
+        return (
+            <div className="flex items-center justify-center h-64 text-gray-500">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p>Loading courses...</p>
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-800">My Courses</h2>
-                <span className="text-sm text-gray-500">Fall 2025 Semester</span>
+                <div>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">My Courses</h2>
+                    <p className="text-gray-500 mt-1">Manage and view your enrolled courses</p>
+                </div>
+                <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 text-blue-600">
+                    <BookOpen size={24} />
+                </div>
             </div>
 
             <motion.div
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
             >
-                {courses.map((course) => (
-                    <CourseCard
-                        key={course.id}
-                        course={course}
-                        onClick={handleCourseClick}
-                    />
-                ))}
+                {courses.length > 0 ? (
+                    courses.map((course) => (
+                        <motion.div key={course.id} variants={itemVariants} className="h-full">
+                            <CourseCard
+                                course={course}
+                                onClick={handleCourseClick}
+                            />
+                        </motion.div>
+                    ))
+                ) : (
+                    <motion.div variants={itemVariants} className="col-span-full">
+                        <div className="text-center py-16 bg-white/40 backdrop-blur-xl rounded-3xl border border-white/60">
+                            <BookOpen size={48} className="mx-auto text-gray-300 mb-4" />
+                            <p className="text-gray-500 font-medium">No courses found for this semester.</p>
+                        </div>
+                    </motion.div>
+                )}
             </motion.div>
-
-            {courses.length === 0 && (
-                <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-                    <p className="text-gray-500">No courses found for this semester.</p>
-                </div>
-            )}
         </div>
     );
 }

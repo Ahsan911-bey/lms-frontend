@@ -111,12 +111,12 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Basic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Student ID (Numeric)" type="number" error={errors.id} {...register("id")} />
-                            <Input label="Full Name" error={errors.name} {...register("name")} />
-                            <Input label="Father Name" error={errors.fatherName} {...register("fatherName")} />
-                            <Input label="Date of Birth" type="date" error={errors.dob} {...register("dob")} />
-                            <Input label="Nationality" error={errors.nationality} {...register("nationality")} />
-                            <Input label="Profile Picture URL" placeholder="https://..." error={errors.profilePic} {...register("profilePic")} />
+                            <Input className="text-zinc-900" label="Student ID (Numeric)" type="number" error={errors.id} {...register("id")} />
+                            <Input className="text-zinc-900" label="Full Name" error={errors.name} {...register("name")} />
+                            <Input className="text-zinc-900" label="Father Name" error={errors.fatherName} {...register("fatherName")} />
+                            <Input className="text-zinc-900" label="Date of Birth" type="date" error={errors.dob} {...register("dob")} />
+                            <Input className="text-zinc-900" label="Nationality" error={errors.nationality} {...register("nationality")} />
+                            <Input className="text-zinc-900" label="Profile Picture URL" placeholder="https://..." error={errors.profilePic} {...register("profilePic")} />
                         </div>
                     </div>
 
@@ -124,10 +124,10 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Contact Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Contact Number" error={errors.contactNumber} {...register("contactNumber")} />
-                            <Input label="Guardian Number" error={errors.guardianNumber} {...register("guardianNumber")} />
+                            <Input className="text-zinc-900" label="Contact Number" error={errors.contactNumber} {...register("contactNumber")} />
+                            <Input className="text-zinc-900" label="Guardian Number" error={errors.guardianNumber} {...register("guardianNumber")} />
                             <div className="col-span-2">
-                                <Input label="Email Address" type="email" error={errors.emailAddress} {...register("emailAddress")} />
+                                <Input className="text-zinc-900" label="Email Address" type="email" error={errors.emailAddress} {...register("emailAddress")} />
                             </div>
                         </div>
                     </div>
@@ -136,14 +136,14 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Academic Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Registration No" placeholder="CS-001" error={errors.regNo} {...register("regNo")} />
-                            <Input label="Program" placeholder="Computer Science" error={errors.program} {...register("program")} />
-                            <Input label="Session" placeholder="FA23" error={errors.session} {...register("session")} />
-                            <Input label="Semester" placeholder="1" error={errors.semester} {...register("semester")} />
-                            <Input label="Class Name" placeholder="CS-1A" error={errors.className} {...register("className")} />
-                            <Input label="Campus" placeholder="ISL" error={errors.campus} {...register("campus")} />
-                            <Input label="Batch" placeholder="Batch-A" error={errors.batch} {...register("batch")} />
-                            <Input label="CGPA" type="number" step="0.01" error={errors.cgpa} {...register("cgpa")} />
+                            <Input className="text-zinc-900" label="Registration No" placeholder="CS-001" error={errors.regNo} {...register("regNo")} />
+                            <Input className="text-zinc-900" label="Program" placeholder="Computer Science" error={errors.program} {...register("program")} />
+                            <Input className="text-zinc-900" label="Session" placeholder="FA23" error={errors.session} {...register("session")} />
+                            <Input className="text-zinc-900" label="Semester" placeholder="1" error={errors.semester} {...register("semester")} />
+                            <Input className="text-zinc-900" label="Class Name" placeholder="CS-1A" error={errors.className} {...register("className")} />
+                            <Input className="text-zinc-900" label="Campus" placeholder="ISL" error={errors.campus} {...register("campus")} />
+                            <Input className="text-zinc-900" label="Batch" placeholder="Batch-A" error={errors.batch} {...register("batch")} />
+                            <Input className="text-zinc-900" label="CGPA" type="number" step="0.01" error={errors.cgpa} {...register("cgpa")} />
                         </div>
                     </div>
 
@@ -151,10 +151,10 @@ export default function CreateStudentPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Credentials & Access</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Portal Password" type="password" error={errors.password} {...register("password")} />
-                            <Input label="Wi-Fi Account" error={errors.wifiAccount} {...register("wifiAccount")} />
-                            <Input label="Office 365 Email" type="email" error={errors.office365Email} {...register("office365Email")} />
-                            <Input label="Office 365 Password" type="password" error={errors.office365Pass} {...register("office365Pass")} />
+                            <Input className="text-zinc-900" label="Portal Password" type="password" error={errors.password} {...register("password")} />
+                            <Input className="text-zinc-900" label="Wi-Fi Account" error={errors.wifiAccount} {...register("wifiAccount")} />
+                            <Input className="text-zinc-900" label="Office 365 Email" type="email" error={errors.office365Email} {...register("office365Email")} />
+                            <Input className="text-zinc-900" label="Office 365 Password" type="password" error={errors.office365Pass} {...register("office365Pass")} />
                         </div>
                     </div>
 

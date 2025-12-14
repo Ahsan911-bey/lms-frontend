@@ -73,14 +73,14 @@ export default function TeacherSidebar({ teacherId }: { teacherId: number | stri
                 </nav>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-lg relative overflow-hidden text-white">
+            {/* <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-lg relative overflow-hidden text-white">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
                 <h3 className="font-bold text-lg relative z-10">Coming Soon</h3>
                 <p className="text-blue-100 text-sm mt-1 mb-4 relative z-10">New features are on the way!</p>
                 <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-semibold transition-colors border border-white/20 relative z-10 cursor-pointer">
                     Contact Support
                 </button>
-            </div>
+            </div> */}
         </aside>
     );
 }

@@ -1,14 +1,24 @@
 "use client";
 
-// import { motion, AnimatePresence } from "framer-motion";
-// import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
-export default function PageWrapper({ children }: { children: React.ReactNode }) {
-    // Disabling global page transition to prevent conflict with inner page animations
-    // and "double animation" effect reported by user.
+
+export default function PageWrapper({
+    children,
+    className
+}: {
+    children: React.ReactNode;
+    className?: string;
+}) {
     return (
-        <div className="w-full h-full">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className={className}
+        >
             {children}
-        </div>
+        </motion.div>
     );
 }

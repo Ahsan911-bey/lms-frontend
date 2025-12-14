@@ -98,9 +98,9 @@ export default function CreateCoursePage({ params }: { params: Promise<{ id: str
                         </motion.div>
                     )}
 
-                    <Input label="Course Code" placeholder="CS-101" error={errors.courseNo} {...register("courseNo")} />
-                    <Input label="Course Name" placeholder="Introduction to Computing" error={errors.courseName} {...register("courseName")} />
-                    <Input label="Credit Hours" type="number" placeholder="3" error={errors.credits} {...register("credits")} />
+                    <Input className="text-zinc-900" label="Course Code" placeholder="CS-101" error={errors.courseNo} {...register("courseNo")} />
+                    <Input className="text-zinc-900" label="Course Name" placeholder="Introduction to Computing" error={errors.courseName} {...register("courseName")} />
+                    <Input className="text-zinc-900" label="Credit Hours" type="number" placeholder="3" error={errors.credits} {...register("credits")} />
 
                     <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
                         <Link

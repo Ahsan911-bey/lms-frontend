@@ -1,9 +1,9 @@
-import { getStudentsByBatch, getTeacherCourses } from "@/lib/api";
+import { getStudentsByBatch, getTeacherCourses, getAllBatches } from "@/lib/api";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react"; // Import AlertCircle for error state
 import MarkAttendanceBatchesContent from "./MarkAttendanceBatchesContent";
 
-const BATCHES = ["Batch-A", "Batch-B", "Batch-C", "Batch-D", "Batch-E"];
+
 
 export default async function MarkAttendanceBatchesPage({
     params,
@@ -37,14 +37,17 @@ export default async function MarkAttendanceBatchesPage({
         );
     }
 
-    // 2. Concurrently fetch students for all batches to identify which ones exist
+    // 2. Fetch all batches dynamically
+    const batches = await getAllBatches();
+
+    // 3. Concurrently fetch students for all batches to identify which ones exist
     const batchResults = await Promise.allSettled(
-        BATCHES.map(async (batch) => {
+        batches.map(async (batchItem) => {
             try {
-                const students = await getStudentsByBatch(courseCode, batch);
-                return { batch, count: Array.isArray(students) ? students.length : 0 };
+                const students = await getStudentsByBatch(courseCode, batchItem.name);
+                return { batch: batchItem.name, count: Array.isArray(students) ? students.length : 0 };
             } catch (err) {
-                return { batch, count: 0 };
+                return { batch: batchItem.name, count: 0 };
             }
         })
     );

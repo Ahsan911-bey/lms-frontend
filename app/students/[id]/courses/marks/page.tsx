@@ -61,15 +61,17 @@ export default function CourseMarksPage({ params }: { params: Promise<{ id: stri
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-800">{marks.courseName}</h2>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">{marks.courseName}</h2>
                 </div>
             </div>
 
             <CourseMenu studentId={id} courseId={String(selectedCourseId)} />
 
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                    <GraduationCap className="mr-2 text-blue-600" size={20} />
+                <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg mr-3">
+                        <GraduationCap size={20} />
+                    </div>
                     Marks Distribution
                 </h3>
 
@@ -81,26 +83,26 @@ export default function CourseMarksPage({ params }: { params: Promise<{ id: stri
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
                             whileHover={{ scale: 1.02 }}
-                            className="group relative overflow-hidden rounded-2xl p-6 border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+                            className="group relative overflow-hidden rounded-3xl p-8 border border-white/60 bg-white/60 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all duration-300"
                         >
                             {/* Decorative Gradient Blob */}
-                            <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 transition-opacity duration-300 group-hover:opacity-40 ${item.label.includes("Quiz") ? "bg-blue-500" :
-                                item.label.includes("Assignment") ? "bg-purple-500" :
-                                    item.label.includes("Mids") ? "bg-orange-500" :
-                                        "bg-green-500"
+                            <div className={`absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-10 transition-opacity duration-300 group-hover:opacity-20 ${item.label.includes("Quiz") ? "bg-blue-600" :
+                                item.label.includes("Assignment") ? "bg-purple-600" :
+                                    item.label.includes("Mids") ? "bg-orange-600" :
+                                        "bg-green-600"
                                 }`}></div>
 
                             <div className="relative z-10">
-                                <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">{item.label}</h4>
-                                <div className="flex items-baseline space-x-1">
-                                    <p className={`text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${item.label.includes("Quiz") ? "from-blue-400 to-blue-200" :
-                                        item.label.includes("Assignment") ? "from-purple-400 to-purple-200" :
-                                            item.label.includes("Mids") ? "from-orange-400 to-yellow-200" :
-                                                "from-green-400 to-emerald-200"
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">{item.label}</h4>
+                                <div className="flex items-baseline space-x-2">
+                                    <p className={`text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${item.label.includes("Quiz") ? "from-blue-600 to-blue-400" :
+                                        item.label.includes("Assignment") ? "from-purple-600 to-purple-400" :
+                                            item.label.includes("Mids") ? "from-orange-600 to-orange-400" :
+                                                "from-green-600 to-green-400"
                                         }`}>
                                         {item.value.toFixed(2)}
                                     </p>
-                                    <span className="text-sm text-slate-500 font-medium">/ 100</span> {/* Assuming 100 for visual context, or just remove */}
+                                    <span className="text-sm text-gray-400 font-medium">/ 100</span>
                                 </div>
                             </div>
                         </motion.div>

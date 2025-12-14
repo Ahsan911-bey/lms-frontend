@@ -113,7 +113,7 @@ export default function AssignStudentPage({ params }: { params: Promise<{ id: st
                         <div className="relative">
                             <select
                                 {...register("courseId")}
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all appearance-none"
+                                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-zinc-900 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all appearance-none"
                             >
                                 <option value="">Select a course...</option>
                                 {courses.map(c => (
@@ -132,7 +132,7 @@ export default function AssignStudentPage({ params }: { params: Promise<{ id: st
                         <select
                             multiple
                             {...register("studentIds")}
-                            className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all min-h-[150px]"
+                            className="w-full px-4 py-3 rounded-xl border text-zinc-900 border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all min-h-[150px]"
                         >
                             {students.map(s => (
                                 <option key={s.id} value={s.id}>{s.name} ({s.regNo})</option>

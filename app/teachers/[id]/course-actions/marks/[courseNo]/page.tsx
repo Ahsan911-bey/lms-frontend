@@ -1,5 +1,5 @@
 import { ArrowRight, ArrowLeft, Layers, Users } from "lucide-react";
-import { getStudentsByBatch } from "@/lib/api";
+import { getStudentsByBatch, getAllBatches } from "@/lib/api";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -17,18 +17,18 @@ export default async function MarksBatchCheckPage({
         redirect(`/teachers/${id}/course-actions/marks`);
     }
 
-    const batchesToCheck = ["A", "B", "C", "D", "E"];
+    const batches = await getAllBatches();
     const activeBatches: { name: string; studentCount: number }[] = [];
 
     // Concurrent fetch
     const results = await Promise.allSettled(
-        batchesToCheck.map(batch => getStudentsByBatch(courseNo, `Batch-${batch}`))
+        batches.map(batch => getStudentsByBatch(courseNo, batch.name))
     );
 
     results.forEach((result, index) => {
         if (result.status === "fulfilled" && Array.isArray(result.value) && result.value.length > 0) {
             activeBatches.push({
-                name: `Batch-${batchesToCheck[index]}`,
+                name: batches[index].name,
                 studentCount: result.value.length
             });
         }
@@ -99,7 +99,7 @@ export default async function MarksBatchCheckPage({
                             <Layers className="h-6 w-6 text-gray-400" />
                         </div>
                         <h3 className="text-lg font-medium text-gray-900">No Active Batches Found</h3>
-                        <p className="mt-1 text-sm text-gray-500">We couldn't find any students in Batches A-E for this course.</p>
+                        <p className="mt-1 text-sm text-gray-500">We couldn't find any students in any batches for this course.</p>
                     </div>
                 )}
             </div>

@@ -67,7 +67,7 @@ export default function CreateBatchPage({ params }: { params: Promise<{ id: stri
             <div className="bg-white rounded-3xl shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden">
                 <div className="p-8 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Create New Batch</h1>
+                        <h1 className="text-2xl font-bold text-black">Create New Batch</h1>
                         <p className="text-gray-500 mt-1">Add a new academic batch.</p>
                     </div>
                     <div className="h-12 w-12 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm border border-gray-100">
@@ -95,7 +95,7 @@ export default function CreateBatchPage({ params }: { params: Promise<{ id: stri
                         </motion.div>
                     )}
 
-                    <Input label="Batch Name" placeholder="Fall 2024" error={errors.name} {...register("name")} />
+                    <Input label="Batch Name" className="text-zinc-900" placeholder="Fall 2024" error={errors.name} {...register("name")} />
 
                     <div className="pt-6 border-t border-gray-100 flex justify-end gap-3">
                         <Link

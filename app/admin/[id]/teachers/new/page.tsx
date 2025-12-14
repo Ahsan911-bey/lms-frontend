@@ -104,12 +104,12 @@ export default function CreateTeacherPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Personal Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Full Name" error={errors.name} {...register("name")} />
-                            <Input label="Father Name" error={errors.fatherName} {...register("fatherName")} />
-                            <Input label="Date of Birth (YYYY-MM-DD)" type="date" error={errors.dob} {...register("dob")} />
-                            <Input label="Nationality" error={errors.nationality} {...register("nationality")} />
-                            <Input label="Contact Number" error={errors.contactNumber} {...register("contactNumber")} />
-                            <Input label="Guardian Contact" error={errors.guardianNumber} {...register("guardianNumber")} />
+                            <Input className="text-zinc-900" label="Full Name" error={errors.name} {...register("name")} />
+                            <Input className="text-zinc-900" label="Father Name" error={errors.fatherName} {...register("fatherName")} />
+                            <Input className="text-zinc-900" label="Date of Birth (YYYY-MM-DD)" type="date" error={errors.dob} {...register("dob")} />
+                            <Input className="text-zinc-900" label="Nationality" error={errors.nationality} {...register("nationality")} />
+                            <Input className="text-zinc-900" label="Contact Number" error={errors.contactNumber} {...register("contactNumber")} />
+                            <Input className="text-zinc-900" label="Guardian Contact" error={errors.guardianNumber} {...register("guardianNumber")} />
                         </div>
                     </div>
 
@@ -117,10 +117,10 @@ export default function CreateTeacherPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Academic Profile</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Registration No" placeholder="T-001" error={errors.regNo} {...register("regNo")} />
-                            <Input label="Qualification" placeholder="PhD Computer Science" error={errors.qualification} {...register("qualification")} />
-                            <Input label="Specialization" placeholder="Artificial Intelligence" error={errors.specialization} {...register("specialization")} />
-                            <Input label="Program" placeholder="Computer Science" error={errors.program} {...register("program")} />
+                            <Input className="text-zinc-900" label="Registration No" placeholder="T-001" error={errors.regNo} {...register("regNo")} />
+                            <Input className="text-zinc-900" label="Qualification" placeholder="PhD Computer Science" error={errors.qualification} {...register("qualification")} />
+                            <Input className="text-zinc-900" label="Specialization" placeholder="Artificial Intelligence" error={errors.specialization} {...register("specialization")} />
+                            <Input className="text-zinc-900" label="Program" placeholder="Computer Science" error={errors.program} {...register("program")} />
                         </div>
                     </div>
 
@@ -128,10 +128,10 @@ export default function CreateTeacherPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Assignment Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Campus" placeholder="ISL" error={errors.campus} {...register("campus")} />
-                            <Input label="Session" placeholder="FA23" error={errors.session} {...register("session")} />
-                            <Input label="Semester" placeholder="1" error={errors.semester} {...register("semester")} />
-                            <Input label="Class Name" placeholder="CS-1A" error={errors.className} {...register("className")} />
+                            <Input className="text-zinc-900" label="Campus" placeholder="ISL" error={errors.campus} {...register("campus")} />
+                            <Input className="text-zinc-900" label="Session" placeholder="FA23" error={errors.session} {...register("session")} />
+                            <Input className="text-zinc-900" label="Semester" placeholder="1" error={errors.semester} {...register("semester")} />
+                            <Input className="text-zinc-900" label="Class Name" placeholder="CS-1A" error={errors.className} {...register("className")} />
                         </div>
                     </div>
 
@@ -139,10 +139,10 @@ export default function CreateTeacherPage({ params }: { params: Promise<{ id: st
                     <div className="space-y-6">
                         <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">Account Credentials</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Input label="Email Address" type="email" error={errors.emailAddress} {...register("emailAddress")} />
-                            <Input label="Password" type="password" error={errors.password} {...register("password")} />
+                            <Input className="text-zinc-900" label="Email Address" type="email" error={errors.emailAddress} {...register("emailAddress")} />
+                            <Input className="text-zinc-900" label="Password" type="password" error={errors.password} {...register("password")} />
                             <div className="col-span-2">
-                                <Input label="Profile Picture URL" placeholder="https://..." error={errors.profilePic} {...register("profilePic")} />
+                                <Input className="text-zinc-900" label="Profile Picture URL" placeholder="https://..." error={errors.profilePic} {...register("profilePic")} />
                             </div>
                         </div>
                     </div>

@@ -52,26 +52,19 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
     const handleFileUpload = async (file: File, assignmentId: number) => {
         try {
             setSubmittingId(assignmentId);
-
-            // 1. Upload the file
             const filename = await uploadFile(file);
-
-            // 2. Submit the assignment
             await submitAssignment({
                 studentId: id,
                 assignmentId: assignmentId,
                 fileUrl: filename
             });
 
-            // 3. Update local state
             setAssignments(prev => prev.map(a =>
                 a.id === assignmentId
                     ? { ...a, status: "submitted", studentSubmissionFileUrl: filename }
                     : a
             ));
-
             alert("Assignment submitted successfully!");
-
         } catch (error) {
             console.error("Failed to submit assignment:", error);
             alert("Failed to submit assignment. Please try again.");
@@ -95,9 +88,9 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
 
     const getStatusColor = (status: Assignment["status"]) => {
         switch (status) {
-            case "submitted": return "text-green-400 bg-green-500/10 border-green-500/20";
-            case "late": return "text-red-400 bg-red-500/10 border-red-500/20";
-            default: return "text-orange-400 bg-orange-500/10 border-orange-500/20";
+            case "submitted": return "text-green-600 bg-green-50 border-green-200";
+            case "late": return "text-red-600 bg-red-50 border-red-200";
+            default: return "text-orange-600 bg-orange-50 border-orange-200";
         }
     };
 
@@ -113,16 +106,18 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-800">{course.courseName}</h2>
-                    <p className="text-sm text-gray-500">{course.courseNo} • {course.credits} Credits</p>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">{course.courseName}</h2>
+                    <p className="text-gray-500 mt-1">{course.courseNo} • {course.credits} Credits</p>
                 </div>
             </div>
 
             <CourseMenu studentId={id} courseId={String(selectedCourseId)} />
 
             <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-                    <FileText className="mr-2 text-blue-600" size={20} />
+                <h3 className="text-lg font-bold text-gray-800 flex items-center">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg mr-3">
+                        <FileText size={20} />
+                    </div>
                     Assignments
                 </h3>
 
@@ -139,24 +134,21 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 backdrop-blur-xl shadow-lg transition-all"
+                                    className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/60 backdrop-blur-xl shadow-sm hover:shadow-md transition-all"
                                 >
-                                    {/* Glass Highlight */}
-                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-
                                     <div
                                         onClick={() => toggleExpand(assignment.id)}
-                                        className="p-6 cursor-pointer hover:bg-white/5 transition-colors flex items-start justify-between relative z-10"
+                                        className="p-6 cursor-pointer hover:bg-white/40 transition-colors flex items-start justify-between relative z-10"
                                     >
                                         <div>
                                             <div className="flex items-center space-x-3 mb-2">
-                                                <h4 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">{assignment.title}</h4>
+                                                <h4 className="font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors">{assignment.title}</h4>
                                                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border flex items-center ${statusStyle}`}>
                                                     {getStatusIcon(assignment.status)}
                                                     {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
                                                 </span>
                                             </div>
-                                            <p className="text-sm text-slate-400 flex items-center">
+                                            <p className="text-sm text-gray-500 flex items-center font-medium">
                                                 <Clock size={14} className="mr-1" />
                                                 Due: {new Date(assignment.dueDate).toLocaleDateString(undefined, {
                                                     weekday: 'long',
@@ -166,7 +158,7 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
                                                 })}
                                             </p>
                                         </div>
-                                        {isExpanded ? <ChevronUp className="text-slate-400" /> : <ChevronDown className="text-slate-400" />}
+                                        {isExpanded ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
                                     </div>
 
                                     <AnimatePresence>
@@ -175,28 +167,28 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
                                                 initial={{ height: 0, opacity: 0 }}
                                                 animate={{ height: "auto", opacity: 1 }}
                                                 exit={{ height: 0, opacity: 0 }}
-                                                className="border-t border-white/10 bg-black/20"
+                                                className="border-t border-gray-100 bg-white/30"
                                             >
                                                 <div className="p-6 space-y-6">
                                                     <div>
-                                                        <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">Instructions</h5>
-                                                        <p className="text-sm text-slate-300 leading-relaxed">{assignment.description}</p>
+                                                        <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Instructions</h5>
+                                                        <p className="text-sm text-gray-600 leading-relaxed">{assignment.description}</p>
                                                     </div>
 
-                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-6 py-4 border-t border-b border-white/10">
+                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-6 py-4 border-t border-gray-100">
                                                         <div className="flex-1">
-                                                            <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">Assignment Material</h5>
+                                                            <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Assignment Material</h5>
                                                             {assignment.teacherFileUrl ? (
                                                                 <a
                                                                     href={getFileDownloadUrl(assignment.teacherFileUrl)}
-                                                                    className="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors bg-blue-500/10 px-4 py-2 rounded-lg border border-blue-500/20 hover:bg-blue-500/20"
+                                                                    className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-bold transition-colors bg-blue-50 px-4 py-2 rounded-lg border border-blue-100 hover:bg-blue-100"
                                                                     download
                                                                 >
                                                                     <Download className="mr-2 h-4 w-4" />
                                                                     Download Assignment
                                                                 </a>
                                                             ) : (
-                                                                <span className="text-sm text-slate-500 italic flex items-center">
+                                                                <span className="text-sm text-gray-400 italic flex items-center">
                                                                     <AlertCircle className="mr-2 h-4 w-4" />
                                                                     No file attached
                                                                 </span>
@@ -205,18 +197,18 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
 
                                                         {assignment.status !== "pending" && (
                                                             <div className="flex-1">
-                                                                <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">Your Work</h5>
+                                                                <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Your Work</h5>
                                                                 {assignment.studentSubmissionFileUrl ? (
                                                                     <a
                                                                         href={getFileDownloadUrl(assignment.studentSubmissionFileUrl)}
-                                                                        className="inline-flex items-center text-sm text-green-400 hover:text-green-300 font-medium transition-colors bg-green-500/10 px-4 py-2 rounded-lg border border-green-500/20 hover:bg-green-500/20"
+                                                                        className="inline-flex items-center text-sm text-green-600 hover:text-green-700 font-bold transition-colors bg-green-50 px-4 py-2 rounded-lg border border-green-100 hover:bg-green-100"
                                                                         download
                                                                     >
                                                                         <CheckCircle className="mr-2 h-4 w-4" />
                                                                         View Your Submission
                                                                     </a>
                                                                 ) : (
-                                                                    <span className="text-sm text-slate-500">File uploaded</span>
+                                                                    <span className="text-sm text-gray-500">File uploaded</span>
                                                                 )}
                                                             </div>
                                                         )}
@@ -224,15 +216,15 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
 
                                                     {assignment.status === "pending" && (
                                                         <div>
-                                                            <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Submit Assignment</h5>
+                                                            <h5 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Submit Assignment</h5>
                                                             <div className="max-w-md">
                                                                 {isSubmitting ? (
-                                                                    <div className="flex flex-col items-center justify-center p-8 border-2 border-white/10 border-dashed rounded-lg bg-white/5">
-                                                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
-                                                                        <p className="text-sm text-slate-400">Uploading and submitting...</p>
+                                                                    <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50">
+                                                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
+                                                                        <p className="text-sm text-gray-500">Uploading and submitting...</p>
                                                                     </div>
                                                                 ) : (
-                                                                    <div className="dark-upload-wrapper">
+                                                                    <div className="light-upload-wrapper">
                                                                         <FileUpload
                                                                             label="Upload your solution (PDF)"
                                                                             accept=".pdf,.doc,.docx"
@@ -252,12 +244,12 @@ export default function CourseAssignmentsPage({ params }: { params: Promise<{ id
                         })}
                     </div>
                 ) : (
-                    <div className="text-center py-16 bg-slate-900/50 rounded-2xl border border-white/10 backdrop-blur-sm">
-                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
-                            <FileText className="w-8 h-8 text-slate-600" />
+                    <div className="text-center py-16 bg-white/40 backdrop-blur-xl rounded-2xl border border-white/60">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4 text-gray-400">
+                            <FileText className="w-8 h-8" />
                         </div>
-                        <p className="text-slate-400 font-medium">No assignments assigned yet.</p>
-                        <p className="text-sm text-slate-600 mt-2">Enjoy your free time!</p>
+                        <p className="text-gray-600 font-medium">No assignments assigned yet.</p>
+                        <p className="text-sm text-gray-400 mt-2">Enjoy your free time!</p>
                     </div>
                 )}
             </div>

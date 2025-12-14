@@ -220,6 +220,8 @@ async function apiGet<T>(endpoint: string): Promise<T> {
  * @returns Promise with the response data
  */
 async function apiPost<T>(endpoint: string, body: any): Promise<T> {
+    console.log("🚀 ~ Making API Request to:", `${BASE_URL}${endpoint}`);
+    console.log("📦 ~ Request Body:", JSON.stringify(body, null, 2));
     const res = await fetch(`${BASE_URL}${endpoint}`, {
         method: "POST",
         headers: {
@@ -389,7 +391,7 @@ export const assignBatch = (data: BatchAssignData) =>
     apiPost<any>(`/admin/batch/assign`, data);
 
 export const assignBatchToCourse = (data: AssignBatchToCourseData) =>
-    apiPost<any>(`/admin/course/assign-batch`, data);
+    apiPost<any>(`/admin/batch/assign`, data);
 
 export const assignTeacherToCourse = (data: AssignTeacherData) =>
     apiPost<any>(`/admin/course/assign-teacher`, data);

@@ -1,7 +1,7 @@
-import { getStudentsByBatch } from "@/lib/api";
+import { getStudentsByBatch, getAllBatches } from "@/lib/api";
 import CheckAttendanceBatchesContent from "./CheckAttendanceBatchesContent";
 
-const BATCHES = ["Batch-A", "Batch-B", "Batch-C", "Batch-D", "Batch-E"];
+
 
 export default async function CheckAttendanceBatchesPage({
     params,
@@ -10,14 +10,17 @@ export default async function CheckAttendanceBatchesPage({
 }) {
     const { id, courseNo } = await params;
 
+    // Fetch all batches dynamically
+    const batches = await getAllBatches();
+
     // Concurrently fetch students for all batches to identify which ones exist
     const batchResults = await Promise.allSettled(
-        BATCHES.map(async (batch) => {
+        batches.map(async (batchItem) => {
             try {
-                const students = await getStudentsByBatch(courseNo, batch);
-                return { batch, count: Array.isArray(students) ? students.length : 0 };
+                const students = await getStudentsByBatch(courseNo, batchItem.name);
+                return { batch: batchItem.name, count: Array.isArray(students) ? students.length : 0 };
             } catch (err) {
-                return { batch, count: 0 };
+                return { batch: batchItem.name, count: 0 };
             }
         })
     );
