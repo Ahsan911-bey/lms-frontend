@@ -25,7 +25,7 @@ export default function TeacherProfileHeader({ teacher }: { teacher: Teacher }) 
                 </div>
             </div>
 
-            <div className="relative z-10 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-10">
+            <div className="relative z-10 container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 md:pt-10 pb-10">
                 {/* Glassmorphism Card */}
                 <div className="flex flex-col md:flex-row items-center gap-8 backdrop-blur-md bg-white/10 p-8 rounded-3xl border border-white/10 shadow-xl ring-1 ring-black/5">
                     {/* Profile Picture */}

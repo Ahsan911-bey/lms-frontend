@@ -57,7 +57,7 @@ export default function RegCardPage({ params }: { params: Promise<{ id: string }
                         {/* Logo */}
                         <div className="w-16 h-16 relative bg-white rounded-full overflow-hidden shrink-0">
                             <Image
-                                src="https://swl-cms.comsats.edu.pk:8082/Content/img/logo_with_text.png"
+                                src="/logo.webp"
                                 alt="University Logo"
                                 fill
                                 className="object-contain p-1"

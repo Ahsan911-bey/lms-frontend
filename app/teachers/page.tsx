@@ -112,9 +112,9 @@ export default function TeacherPortalLogin() {
                 >
                     {/* University Logo */}
                     <div className="mb-10 flex justify-center">
-                        <div className="relative w-64 h-24">
+                        <div className="relative mb-6 h-24 w-64">
                             <Image
-                                src="https://swl-cms.comsats.edu.pk:8082/Content/img/logo_with_text.png"
+                                src="/logo.webp"
                                 alt="University Logo"
                                 fill
                                 className="object-contain"

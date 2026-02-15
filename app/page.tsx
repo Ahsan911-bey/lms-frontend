@@ -76,7 +76,7 @@ export default function Home() {
         >
           <div className="mb-8 relative h-32 w-80 sm:h-40 sm:w-96 drop-shadow-2xl">
             <Image
-              src="https://swl-cms.comsats.edu.pk:8082/Content/img/logo_with_text.png"
+              src="/logo.webp"
               alt="University Logo"
               fill
               className="object-contain"
@@ -121,15 +121,6 @@ export default function Home() {
             delay={0.6}
           />
         </div>
-
-        <motion.footer
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="mt-16 text-center text-sm text-zinc-500 dark:text-zinc-400"
-        >
-          © {new Date().getFullYear()} COMSATS University Islamabad, Sahiwal Campus. All rights reserved.
-        </motion.footer>
       </main>
     </div>
   );

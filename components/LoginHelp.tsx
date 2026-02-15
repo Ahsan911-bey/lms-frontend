@@ -42,7 +42,7 @@ export default function LoginHelp({ role }: LoginHelpProps) {
                     borderColor: "border-teal-200 dark:border-teal-700",
                     buttonColor: "bg-teal-600 hover:bg-teal-700",
                     credentials: [
-                        { label: "IDs", value: "2 - 15" },
+                        { label: "IDs", value: "2 - 11" },
                         { label: "Password", value: "password" }
                     ],
                     note: "Faculty portal access"
@@ -56,7 +56,7 @@ export default function LoginHelp({ role }: LoginHelpProps) {
                     borderColor: "border-blue-200 dark:border-blue-700",
                     buttonColor: "bg-blue-600 hover:bg-blue-700",
                     credentials: [
-                        { label: "IDs", value: "16 - 61" },
+                        { label: "IDs", value: "12 - 61" },
                         { label: "Password", value: "password" }
                     ],
                     note: "Student portal access"
