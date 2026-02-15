@@ -58,7 +58,7 @@ export default function TeacherPortalLogin() {
     return (
         <div className="flex min-h-screen w-full bg-white dark:bg-zinc-950 font-sans lg:flex-row flex-col">
             {/* Left Side - Hero Section */}
-            <div className="relative w-full lg:w-[55%] flex flex-col items-center justify-center p-8 lg:p-16 overflow-hidden bg-emerald-900">
+            <div className="relative w-full lg:w-[55%] flex flex-col items-center justify-center px-6 py-8 lg:p-16 overflow-hidden bg-emerald-900">
                 {/* Background Gradients/Patterns */}
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-zinc-900 to-teal-900 opacity-90"></div>
@@ -69,26 +69,31 @@ export default function TeacherPortalLogin() {
                     <div className="absolute bottom-12 right-12 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
                 </div>
 
-                <div className="relative z-10 flex flex-col items-start max-w-lg text-left">
+                <div className="relative z-10 flex flex-col items-start max-w-lg text-left w-full">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
+                        className="w-full"
                     >
-                        <div className="mb-6 flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
-                            <PenTool className="w-8 h-8 text-emerald-200" />
+                        {/* Mobile: Row Layout, Desktop: Column Layout */}
+                        <div className="flex flex-row items-center gap-4 mb-4 lg:flex-col lg:items-start lg:gap-0 lg:mb-6">
+                            <div className="flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shrink-0">
+                                <PenTool className="w-6 h-6 lg:w-8 lg:h-8 text-emerald-200" />
+                            </div>
+                            <h1 className="text-2xl lg:text-6xl font-bold tracking-tight text-white leading-none lg:leading-tight lg:mt-6">
+                                <span className="block lg:inline">Welcome to </span>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 block lg:inline">
+                                    Teacher Portal
+                                </span>
+                            </h1>
                         </div>
-                        <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
-                            Welcome to <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-                                Teacher Portal
-                            </span>
-                        </h1>
-                        <p className="text-lg text-zinc-300 leading-relaxed mb-8">
+
+                        <p className="text-sm lg:text-lg text-zinc-300 leading-relaxed mb-6 lg:mb-8 max-w-sm lg:max-w-none">
                             Manage your courses, grading, and student engagement efficiently with our advanced academic tools.
                         </p>
 
-                        <div className="grid grid-cols-2 gap-4 w-full">
+                        <div className="hidden lg:grid grid-cols-2 gap-4 w-full">
                             <div className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                                 <BookOpen className="w-5 h-5 text-emerald-300" />
                                 <span className="text-sm font-medium text-zinc-200">Course Management</span>
@@ -103,7 +108,7 @@ export default function TeacherPortalLogin() {
             </div>
 
             {/* Right Side - Login Form */}
-            <div className="w-full lg:w-[45%] flex flex-col items-center justify-center p-8 lg:p-16 bg-white dark:bg-zinc-950 relative">
+            <div className="w-full lg:w-[45%] flex-1 flex flex-col items-center justify-center p-8 lg:p-16 bg-white dark:bg-zinc-950 relative min-h-[65vh] lg:min-h-0">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -215,7 +220,7 @@ export default function TeacherPortalLogin() {
                     </form>
                 </motion.div>
 
-                <div className="absolute bottom-6 w-full text-center">
+                <div className="absolute bottom-1 md:bottom-6 w-full text-center">
                     <p className="text-xs text-zinc-400">
                         © {new Date().getFullYear()} COMSATS University Islamabad. All rights reserved.
                     </p>

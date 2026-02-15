@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
     LayoutDashboard,
     School,
@@ -9,12 +10,20 @@ import {
     LogOut,
     PlusCircle,
     Layers,
-    FolderOpen
+    FolderOpen,
+    Menu,
+    X
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AdminSidebar({ adminId }: { adminId: number | string }) {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Close sidebar when route changes
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
 
     const menuItems = [
         { name: "Dashboard", href: `/admin/${adminId}/dashboard`, icon: LayoutDashboard },
@@ -25,10 +34,18 @@ export default function AdminSidebar({ adminId }: { adminId: number | string }) 
         { name: "Batches", href: `/admin/${adminId}/batches`, icon: FolderOpen },
     ];
 
-    return (
-        <aside className="w-64 hidden md:flex flex-col h-fit sticky top-8 space-y-6">
-            <div className="bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/50 ring-1 ring-black/5">
-                <h2 className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Admin Menu</h2>
+    const SidebarContent = () => (
+        <div className="flex flex-col h-full">
+            <div className="bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/50 ring-1 ring-black/5 h-full">
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Admin Menu</h2>
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="md:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-500"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
                 <nav className="space-y-1 relative">
                     {menuItems.map((item) => {
                         const isActive = pathname.startsWith(item.href);
@@ -77,6 +94,47 @@ export default function AdminSidebar({ adminId }: { adminId: number | string }) 
                     </div>
                 </nav>
             </div>
-        </aside>
+        </div>
+    );
+
+    return (
+        <>
+            <aside className="w-64 hidden md:flex flex-col h-fit sticky top-8 space-y-6">
+                <SidebarContent />
+            </aside>
+
+            {/* Mobile Toggle Button */}
+            <button
+                onClick={() => setIsOpen(true)}
+                className="md:hidden fixed bottom-6 left-6 z-50 p-4 bg-purple-600 text-white rounded-full shadow-lg hover:bg-purple-700 transition-colors"
+                aria-label="Open Menu"
+            >
+                <Menu size={24} />
+            </button>
+
+            {/* Mobile Drawer */}
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="fixed inset-0 bg-black/50 z-50 md:hidden backdrop-blur-sm"
+                        />
+                        <motion.aside
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-0 left-0 bottom-0 w-72 bg-white/95 backdrop-blur-xl z-50 md:hidden shadow-2xl overflow-y-auto p-4"
+                        >
+                            <SidebarContent />
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 }

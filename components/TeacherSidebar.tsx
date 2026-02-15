@@ -2,18 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import {
     LayoutDashboard,
     BookOpen,
     UserCog,
     LogOut,
     FileCog,
-    Users
+    Users,
+    Menu,
+    X
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TeacherSidebar({ teacherId }: { teacherId: number | string }) {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Close sidebar when route changes
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
 
     const menuItems = [
         { name: "Dashboard", href: `/teachers/${teacherId}/dashboard`, icon: LayoutDashboard },
@@ -23,10 +32,18 @@ export default function TeacherSidebar({ teacherId }: { teacherId: number | stri
         { name: "Profile", href: `/teachers/${teacherId}/profile`, icon: UserCog },
     ];
 
-    return (
-        <aside className="w-64 hidden md:flex flex-col h-fit sticky top-8 space-y-6">
-            <div className="bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/50 ring-1 ring-black/5">
-                <h2 className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Menu</h2>
+    const SidebarContent = () => (
+        <div className="flex flex-col h-full">
+            <div className="bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-white/50 ring-1 ring-black/5 h-full">
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Menu</h2>
+                    <button
+                        onClick={() => setIsOpen(false)}
+                        className="md:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-500"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
                 <nav className="space-y-1 relative">
                     {menuItems.map((item) => {
                         const isActive = pathname === item.href;
@@ -75,15 +92,47 @@ export default function TeacherSidebar({ teacherId }: { teacherId: number | stri
                     </div>
                 </nav>
             </div>
+        </div>
+    );
 
-            {/* <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-lg relative overflow-hidden text-white">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl -translate-y-10 translate-x-10"></div>
-                <h3 className="font-bold text-lg relative z-10">Coming Soon</h3>
-                <p className="text-blue-100 text-sm mt-1 mb-4 relative z-10">New features are on the way!</p>
-                <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-sm font-semibold transition-colors border border-white/20 relative z-10 cursor-pointer">
-                    Contact Support
-                </button>
-            </div> */}
-        </aside>
+    return (
+        <>
+            <aside className="w-64 hidden md:flex flex-col h-fit sticky top-8 space-y-6">
+                <SidebarContent />
+            </aside>
+
+            {/* Mobile Toggle Button */}
+            <button
+                onClick={() => setIsOpen(true)}
+                className="md:hidden fixed bottom-6 left-6 z-50 p-4 bg-teal-600 text-white rounded-full shadow-lg hover:bg-teal-700 transition-colors"
+                aria-label="Open Menu"
+            >
+                <Menu size={24} />
+            </button>
+
+            {/* Mobile Drawer */}
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="fixed inset-0 bg-black/50 z-50 md:hidden backdrop-blur-sm"
+                        />
+                        <motion.aside
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                            className="fixed top-0 left-0 bottom-0 w-72 bg-white/95 backdrop-blur-xl z-50 md:hidden shadow-2xl overflow-y-auto p-4"
+                        >
+                            <SidebarContent />
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 }
