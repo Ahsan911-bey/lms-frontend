@@ -35,13 +35,15 @@ export default function AdminPortalLogin() {
         setError(null);
 
         try {
-            const response: any = await validateAdmin(data);
+            const response = await validateAdmin(data);
 
-            // Handle "Validated" string or object
-            if (response === "Validated" || response?.message === "Validated") {
-                router.push(`/admin/${data.id}/dashboard`);
+            if (response && response.token) {
+                const userId = response.id || data.id;
+                const { setAuth } = await import("@/lib/auth");
+                setAuth(response.token, response.role, userId);
+                router.push(`/admin/${userId}/dashboard`);
             } else {
-                setError(`Login failed: ${response?.message || "Unexpected response from server"}`);
+                setError("Login failed: Invalid response from server");
             }
         } catch (err: any) {
             console.error("Login failed:", err);

@@ -62,14 +62,17 @@ export default function TeacherSidebar({ teacherId }: { teacherId: number | stri
                     <div className="my-4 border-t border-gray-100/50 mx-2"></div>
 
                     {/* Logout Option */}
-                    <Link
-                        href="/"
-                        className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-300 group relative overflow-hidden"
+                    <div
+                        onClick={async () => {
+                            const { logout } = await import("@/lib/auth");
+                            logout();
+                        }}
+                        className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-300 group relative overflow-hidden cursor-pointer"
                     >
                         <LogOut className="h-5 w-5 mr-3 text-gray-400 group-hover:text-red-500 transition-colors" />
                         <span className="font-medium">Logout</span>
                         <div className="absolute inset-0 bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl -z-10"></div>
-                    </Link>
+                    </div>
                 </nav>
             </div>
 

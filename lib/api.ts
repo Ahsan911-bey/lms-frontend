@@ -1,3 +1,4 @@
+import { getAuthToken, logout } from "./auth";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -198,13 +199,40 @@ export interface AssignBatchToCourseData {
  * @returns Promise with the response data
  */
 async function apiGet<T>(endpoint: string): Promise<T> {
+    const headers: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    let token: string | null = null;
+
+    if (typeof window === "undefined") {
+        // Server-side: Import cookies dynamically to avoid build issues on client
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        token = cookieStore.get("jwt_token")?.value || null;
+    } else {
+        // Client-side
+        token = getAuthToken();
+    }
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${BASE_URL}${endpoint}`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        cache: "no-store", // Ensure fresh data for dynamic content
+        headers,
+        cache: "no-store",
     });
+
+    if (res.status === 401) {
+        if (typeof window !== "undefined") {
+            logout(); // Auto-logout on client
+        }
+        // On server, we can't easily redirect from here without throwing a specific error related to navigation
+        // For now, let's throw Authorization Error so specific page can handle it
+        throw new Error("Unauthorized");
+    }
 
     if (!res.ok) {
         throw new Error(`API GET request failed: ${res.status} ${res.statusText}`);
@@ -222,11 +250,28 @@ async function apiGet<T>(endpoint: string): Promise<T> {
 async function apiPost<T>(endpoint: string, body: any): Promise<T> {
     console.log("🚀 ~ Making API Request to:", `${BASE_URL}${endpoint}`);
     console.log("📦 ~ Request Body:", JSON.stringify(body, null, 2));
+
+    const headers: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    let token: string | null = null;
+
+    if (typeof window === "undefined") {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        token = cookieStore.get("jwt_token")?.value || null;
+    } else {
+        token = getAuthToken();
+    }
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${BASE_URL}${endpoint}`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify(body),
     });
 
@@ -256,11 +301,27 @@ async function apiPost<T>(endpoint: string, body: any): Promise<T> {
  * @returns Promise with the response data
  */
 async function apiDelete<T>(endpoint: string): Promise<T> {
+    const headers: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    let token: string | null = null;
+
+    if (typeof window === "undefined") {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        token = cookieStore.get("jwt_token")?.value || null;
+    } else {
+        token = getAuthToken();
+    }
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${BASE_URL}${endpoint}`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers,
     });
 
     if (!res.ok) {
@@ -292,8 +353,25 @@ export const uploadFile = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("file", file);
 
+    const headers: HeadersInit = {};
+
+    let token: string | null = null;
+
+    if (typeof window === "undefined") {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        token = cookieStore.get("jwt_token")?.value || null;
+    } else {
+        token = getAuthToken();
+    }
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${BASE_URL}/files/upload`, {
         method: "POST",
+        headers, // Authorization header needs to be added here, but NOT Content-Type (browser sets it for FormData)
         body: formData,
     });
 
@@ -326,8 +404,15 @@ export interface StudentLoginCredentials {
     password: string;
 }
 
+export interface LoginResponse {
+    token: string;
+    email: string;
+    role: string;
+    id?: number; // Backend might optionally return ID
+}
+
 export const validateStudent = (data: StudentLoginCredentials) =>
-    apiPost<string>(`/student/login`, data);
+    apiPost<LoginResponse>(`/student/login`, data);
 
 export interface TeacherLoginCredentials {
     id: number;
@@ -335,7 +420,7 @@ export interface TeacherLoginCredentials {
 }
 
 export const validateTeacher = (data: TeacherLoginCredentials) =>
-    apiPost<string>(`/teacher/login`, data);
+    apiPost<LoginResponse>(`/teacher/login`, data);
 
 export interface AdminLoginCredentials {
     id: number;
@@ -343,7 +428,7 @@ export interface AdminLoginCredentials {
 }
 
 export const validateAdmin = (data: AdminLoginCredentials) =>
-    apiPost<string>(`/admin/login`, data);
+    apiPost<LoginResponse>(`/admin/login`, data);
 
 
 

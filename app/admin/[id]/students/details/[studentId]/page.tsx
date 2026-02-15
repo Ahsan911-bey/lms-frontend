@@ -201,7 +201,6 @@ export default function StudentDetailsPage({ params }: { params: Promise<{ id: s
                         </div>
                     </div>
                     <div className="space-y-4">
-                        <AccountItem label="Office 365" value={student.office365Email} pass={student.office365Pass} />
                         <AccountItem label="Wi-Fi" value={student.wifiAccount} />
                         {student.password && (
                             <AccountItem label="Portal Access" pass={student.password} />
@@ -232,10 +231,16 @@ function AccountItem({ label, value, pass }: { label: string, value?: string, pa
                 <label className="text-xs text-gray-400 uppercase font-bold">{label}</label>
                 {value && <span className="block text-gray-900 font-medium">{value}</span>}
             </div>
+
+            {/* Logic: If 'pass' exists, show the secure badge instead of the raw string */}
             {pass && (
                 <div className="text-right">
-                    <label className="text-xs text-gray-400 uppercase font-bold flex items-center justify-end gap-1"><Key className="h-3 w-3" /> Password</label>
-                    <span className="text-gray-900 font-mono text-sm bg-gray-100 px-2 py-0.5 rounded">{pass}</span>
+                    <div className="inline-flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-100 shadow-sm">
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <span className="text-emerald-700 font-bold text-xs tracking-wide">
+                            ACTIVE & SECURE
+                        </span>
+                    </div>
                 </div>
             )}
         </div>

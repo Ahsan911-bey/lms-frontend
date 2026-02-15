@@ -36,13 +36,20 @@ export default function StudentPortalLogin() {
         setError(null);
 
         try {
-            // The API returns "Validated" string or JSON object { message: "Validated" } on success
-            const response: any = await validateStudent(data);
+            const response = await validateStudent(data);
 
-            if (response === "Validated" || response?.message === "Validated") {
-                router.push(`/students/${data.id}`);
+            if (response && response.token) {
+                // Store token and redirect
+                // Use the ID from the response if available, otherwise fall back to form data (though backend should return it)
+                const userId = response.id || data.id;
+
+                // Dynamically import setAuth to avoid SSR issues if any, though it checks for window
+                const { setAuth } = await import("@/lib/auth");
+                setAuth(response.token, response.role, userId);
+
+                router.push(`/students/${userId}/dashboard`);
             } else {
-                setError(`Login failed: ${response?.message || "Unexpected response from server"}`);
+                setError("Login failed: Invalid response from server");
             }
         } catch (err: any) {
             console.error("Login failed:", err);

@@ -51,13 +51,16 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
                     })}
 
                     {/* Logout Option */}
-                    <Link
-                        href="/"
-                        className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors group mt-4"
+                    <div
+                        onClick={async () => {
+                            const { logout } = await import("@/lib/auth");
+                            logout();
+                        }}
+                        className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors group mt-4 cursor-pointer"
                     >
                         <LogOut className="h-5 w-5 mr-3 text-gray-400 group-hover:text-red-600 transition-colors" />
                         <span className="font-medium">Logout</span>
-                    </Link>
+                    </div>
                 </nav>
             </div>
 

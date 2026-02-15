@@ -35,13 +35,15 @@ export default function TeacherPortalLogin() {
         setError(null);
 
         try {
-            const response: any = await validateTeacher(data);
+            const response = await validateTeacher(data);
 
-            // Handle "Validated" string or object
-            if (response === "Validated" || response?.message === "Validated") {
-                router.push(`/teachers/${data.id}`);
+            if (response && response.token) {
+                const userId = response.id || data.id;
+                const { setAuth } = await import("@/lib/auth");
+                setAuth(response.token, response.role, userId);
+                router.push(`/teachers/${userId}`);
             } else {
-                setError(`Login failed: ${response?.message || "Unexpected response from server"}`);
+                setError("Login failed: Invalid response from server");
             }
         } catch (err: any) {
             console.error("Login failed:", err);
