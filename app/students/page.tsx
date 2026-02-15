@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, AlertCircle, ArrowRight, GraduationCap, BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import { validateStudent } from "@/lib/api";
+import LoginHelp from "@/components/LoginHelp";
 
 const loginSchema = z.object({
     id: z.number().min(1, "Student ID is required"),
@@ -49,7 +50,9 @@ export default function StudentPortalLogin() {
 
                 router.push(`/students/${userId}/dashboard`);
             } else {
-                setError("Login failed: Invalid response from server");
+                // Display specific error message from backend if available
+                const errorMessage = (response as any)?.message || "Login failed: Invalid response from server";
+                setError(errorMessage);
             }
         } catch (err: any) {
             console.error("Login failed:", err);
@@ -246,6 +249,7 @@ export default function StudentPortalLogin() {
                     </p>
                 </div>
             </div>
+            <LoginHelp role="student" />
         </div>
     );
 }
