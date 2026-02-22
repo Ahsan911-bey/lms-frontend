@@ -71,8 +71,8 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
                     {/* Logout Option */}
                     <div
                         onClick={async () => {
-                            const { logout } = await import("@/lib/auth");
-                            logout();
+                            const { logoutAction } = await import("@/app/actions/auth");
+                            logoutAction();
                         }}
                         className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors group mt-4 cursor-pointer"
                     >
@@ -80,14 +80,14 @@ export default function Sidebar({ studentId }: { studentId: number | string }) {
                         <span className="font-medium">Logout</span>
                     </div>
                 </nav>
-            </div>
+            </div >
 
             <div className="p-4 mt-auto border-t border-gray-100">
                 <div className="px-4 py-2">
                     <p className="text-xs text-gray-400">© 2025 CUI</p>
                 </div>
             </div>
-        </div>
+        </div >
     );
 
     return (

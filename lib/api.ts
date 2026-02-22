@@ -1,6 +1,7 @@
-import { getAuthToken } from "./auth";
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const isServer = typeof window === "undefined";
+const BASE_URL = isServer
+    ? (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080")
+    : "/api/proxy";
 
 // --- Types ---
 
@@ -203,10 +204,13 @@ async function apiGet<T>(endpoint: string): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    const token = await getAuthToken();
-
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+    if (isServer) {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const token = cookieStore.get("jwt_token")?.value;
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
     }
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
@@ -240,10 +244,13 @@ async function apiPost<T>(endpoint: string, body: any): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    const token = await getAuthToken();
-
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+    if (isServer) {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const token = cookieStore.get("jwt_token")?.value;
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
     }
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
@@ -282,10 +289,13 @@ async function apiDelete<T>(endpoint: string): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    const token = await getAuthToken();
-
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+    if (isServer) {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const token = cookieStore.get("jwt_token")?.value;
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
     }
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
@@ -324,10 +334,13 @@ export const uploadFile = async (file: File): Promise<string> => {
 
     const headers: HeadersInit = {};
 
-    const token = await getAuthToken();
-
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+    if (isServer) {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const token = cookieStore.get("jwt_token")?.value;
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
     }
 
     const res = await fetch(`${BASE_URL}/files/upload`, {

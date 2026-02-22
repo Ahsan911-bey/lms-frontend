@@ -81,8 +81,8 @@ export default function TeacherSidebar({ teacherId }: { teacherId: number | stri
                     {/* Logout Option */}
                     <div
                         onClick={async () => {
-                            const { logout } = await import("@/lib/auth");
-                            logout();
+                            const { logoutAction } = await import("@/app/actions/auth");
+                            logoutAction();
                         }}
                         className="flex items-center px-4 py-3 text-gray-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-300 group relative overflow-hidden cursor-pointer"
                     >
