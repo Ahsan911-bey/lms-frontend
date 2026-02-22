@@ -36,20 +36,17 @@ export default function TeacherPortalLogin() {
         setError(null);
 
         try {
-            const response = await validateTeacher(data);
+            const { loginTeacherAction } = await import("@/app/actions/auth");
+            const result = await loginTeacherAction(data);
 
-            if (response && response.token) {
-                const userId = response.id || data.id;
-                const { setAuth } = await import("@/lib/auth");
-                setAuth(response.token, response.role, userId);
-                router.push(`/teachers/${userId}`);
-            } else {
-                const errorMessage = (response as any)?.message || "Login failed: Invalid response from server";
-                setError(errorMessage);
+            // If the server action returns a result with an error, it means the redirect didn't happen
+            if (result?.error) {
+                setError(result.error);
             }
         } catch (err: any) {
             console.error("Login failed:", err);
-            setError(err.message || "Invalid credentials. Please try again.");
+            if (err.message && err.message.includes("NEXT_REDIRECT")) return;
+            setError(err.message || "An unexpected error occurred. Please try again.");
         } finally {
             setIsLoading(false);
         }

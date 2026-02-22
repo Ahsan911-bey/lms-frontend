@@ -36,20 +36,18 @@ export default function AdminPortalLogin() {
         setError(null);
 
         try {
-            const response = await validateAdmin(data);
+            const { loginAdminAction } = await import("@/app/actions/auth");
+            const result = await loginAdminAction(data);
 
-            if (response && response.token) {
-                const userId = response.id || data.id;
-                const { setAuth } = await import("@/lib/auth");
-                setAuth(response.token, response.role, userId);
-                router.push(`/admin/${userId}/dashboard`);
-            } else {
-                const errorMessage = (response as any)?.message || "Login failed: Invalid response from server";
-                setError(errorMessage);
+            // If the server action returns a result with an error, it means the redirect didn't happen
+            if (result?.error) {
+                setError(result.error);
             }
         } catch (err: any) {
             console.error("Login failed:", err);
-            setError(err.message || "Invalid credentials. Please try again.");
+            // Ignore NEXT_REDIRECT errors as they indicate successful navigation
+            if (err.message && err.message.includes("NEXT_REDIRECT")) return;
+            setError(err.message || "An unexpected error occurred. Please try again.");
         } finally {
             setIsLoading(false);
         }

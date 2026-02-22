@@ -37,26 +37,18 @@ export default function StudentPortalLogin() {
         setError(null);
 
         try {
-            const response = await validateStudent(data);
+            const { loginStudentAction } = await import("@/app/actions/auth");
+            const result = await loginStudentAction(data);
 
-            if (response && response.token) {
-                // Store token and redirect
-                // Use the ID from the response if available, otherwise fall back to form data (though backend should return it)
-                const userId = response.id || data.id;
-
-                // Dynamically import setAuth to avoid SSR issues if any, though it checks for window
-                const { setAuth } = await import("@/lib/auth");
-                setAuth(response.token, response.role, userId);
-
-                router.push(`/students/${userId}/dashboard`);
-            } else {
-                // Display specific error message from backend if available
-                const errorMessage = (response as any)?.message || "Login failed: Invalid response from server";
-                setError(errorMessage);
+            // If the server action returns a result with an error, it means the redirect didn't happen
+            if (result?.error) {
+                setError(result.error);
             }
         } catch (err: any) {
             console.error("Login failed:", err);
-            setError(err.message || "Invalid credentials. Please try again.");
+            // Ignore NEXT_REDIRECT errors as they indicate successful navigation
+            if (err.message && err.message.includes("NEXT_REDIRECT")) return;
+            setError(err.message || "An unexpected error occurred. Please try again.");
         } finally {
             setIsLoading(false);
         }

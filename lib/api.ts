@@ -1,4 +1,4 @@
-import { getAuthToken, logout } from "./auth";
+import { getAuthToken } from "./auth";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -203,17 +203,7 @@ async function apiGet<T>(endpoint: string): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    let token: string | null = null;
-
-    if (typeof window === "undefined") {
-        // Server-side: Import cookies dynamically to avoid build issues on client
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-        token = cookieStore.get("jwt_token")?.value || null;
-    } else {
-        // Client-side
-        token = getAuthToken();
-    }
+    const token = await getAuthToken();
 
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -226,11 +216,6 @@ async function apiGet<T>(endpoint: string): Promise<T> {
     });
 
     if (res.status === 401) {
-        if (typeof window !== "undefined") {
-            logout(); // Auto-logout on client
-        }
-        // On server, we can't easily redirect from here without throwing a specific error related to navigation
-        // For now, let's throw Authorization Error so specific page can handle it
         throw new Error("Unauthorized");
     }
 
@@ -255,15 +240,7 @@ async function apiPost<T>(endpoint: string, body: any): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    let token: string | null = null;
-
-    if (typeof window === "undefined") {
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-        token = cookieStore.get("jwt_token")?.value || null;
-    } else {
-        token = getAuthToken();
-    }
+    const token = await getAuthToken();
 
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -305,15 +282,7 @@ async function apiDelete<T>(endpoint: string): Promise<T> {
         "Content-Type": "application/json",
     };
 
-    let token: string | null = null;
-
-    if (typeof window === "undefined") {
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-        token = cookieStore.get("jwt_token")?.value || null;
-    } else {
-        token = getAuthToken();
-    }
+    const token = await getAuthToken();
 
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -355,15 +324,7 @@ export const uploadFile = async (file: File): Promise<string> => {
 
     const headers: HeadersInit = {};
 
-    let token: string | null = null;
-
-    if (typeof window === "undefined") {
-        const { cookies } = await import("next/headers");
-        const cookieStore = await cookies();
-        token = cookieStore.get("jwt_token")?.value || null;
-    } else {
-        token = getAuthToken();
-    }
+    const token = await getAuthToken();
 
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
